@@ -1,0 +1,19 @@
+seed: 1234
+workspace: 8000
+
+beam-size: 6
+normalize: 1
+max-length: 200
+
+type: transformer
+enc-depth: 6
+dec-depth: 6
+dim-emb: 512
+transformer-heads: 8
+transformer-dim-ffn: 2048
+transformer-ffn-depth: 2
+transformer-ffn-activation: swish
+transformer-decoder-autoreg: self-attention
+layer-normalization: True
+tied-embeddings-all: True
+max-length-crop: True
