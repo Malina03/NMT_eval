@@ -1,4 +1,4 @@
-# Readme for LM training and evaluation
+# Readme for NMT training and evaluation
 
 Overview of training NMT systems in the MaCoCu project.
 
