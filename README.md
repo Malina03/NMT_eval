@@ -68,7 +68,7 @@ Then, we will fix and clean the data using bifixer and bicleaner-ai. For this to
 
 ```
 mkdir -p bicleaner_models
-./src/bicleaner-ai-download.sh en is lite bicleaner_models
+./src/bicleaner-ai-download.sh en bg lite bicleaner_models
 ```
 
 Then, run the cleaning like this:
