@@ -165,3 +165,22 @@ python src/summarize_eval.py -i exp/ -e flores_dev flores_devtest
 ```
 
 Which should print a nice table, if you have actual results.
+
+## Human Evalation
+
+In our [evaluation report](https://www.dlsi.ua.es/~mespla/MaCoCu_evaluation_report.pdf) we also performed a human evaluation. All the annotations and code are available in ``human_eval/``.
+
+First install scipy and sklearn:
+
+```
+pip install scipy sklearn
+```
+
+Then you can run the full analysis like this:
+
+```
+cd human_eval
+./analysis.sh
+```
+
+This prints total statistics per language, but also individually compares two annotators. The Python script to do this for individual files is in ``humal_eval/human_eval.py``.
