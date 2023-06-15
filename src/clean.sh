@@ -24,23 +24,23 @@ module load GCCcore/11.2.0
 # export SRC=$2 # Iso code for source language
 # export TRG=$3 # Iso code for target language
 
-FILE=/scratch/hb-macocu/NMT_eval/TED2020.en-sq.tsv.dedup
-SRC=en
-TRG=sq
+FILE="/scratch/hb-macocu/NMT_eval/TED2020.en-sq.tsv.dedup"
+SRC="en"
+TRG="sq"
 
 echo "Processing $1"
 
 # Maybe you have to download the models first
 # See explanation: https://github.com/bitextor/bicleaner-ai#parameters
-export MODELS="/home1/s3412768/NMT_eval/bicleaner_models"
+MODELS="/home1/s3412768/NMT_eval/bicleaner_models"
 
 JOBS=16
 # Set bicleaner jobs to number of GPUs if GPUs are available
 BICLEANER_JOBS=1
 
 score (){
-    export CUDA_VISIBLE_DEVICES=$1
-    export CUDA_VISIBLE_DEVICES=$((CUDA_VISIBLE_DEVICES-1))
+    CUDA_VISIBLE_DEVICES=$1
+    CUDA_VISIBLE_DEVICES=$((CUDA_VISIBLE_DEVICES-1))
 
     bicleaner-ai-classify \
         --scol 1 --tcol 2 \
