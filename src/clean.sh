@@ -30,8 +30,6 @@ FILE="/scratch/hb-macocu/NMT_eval/TED2020.en-sq.tsv.dedup"
 SRC="en"
 TRG="sq"
 
-echo "Processing $1"
-
 # Maybe you have to download the models first
 # See explanation: https://github.com/bitextor/bicleaner-ai#parameters
 MODELS="/home1/s3412768/NMT_eval/bicleaner_models"
@@ -73,7 +71,6 @@ cat $FILE | parallel -k --pipe -j $JOBS --block 10M \
 # Sleep 5 seconds to maybe avoid an error
 sleep 5 || true
 
-echo "Now filter the data"
 
 # Only keep sentences with a bicleaner score of >= 0.5 and save to separate file
 cat ${FILE}.clean | awk -F"\t" '$5 >= 0.5' | cut -f1,2 > ${FILE}.clean.filter
