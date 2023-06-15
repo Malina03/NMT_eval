@@ -1,27 +1,36 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=00:09:59
+#SBATCH --time=00:15:00
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:v100:1
+#SBATCH --gres=gpu:a100:1
 #SBATCH --mem=50G
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=rikvannoord@gmail.com
+#SBATCH --mail-user=m.chichirau@student.rug.nl
 set -eu -o pipefail
 
 # Script for applying bifixer and bicleaner.
 
 # Load CUDA module to be sure
+module load Python/3.9.6-GCCcore-11.2.0
 module load CUDA
+module load CMake/3.22.1-GCCcore-11.2.0
+module load hunspell/1.7.1-GCCcore-11.2.0
+module load GCC/11.2.0
+module load GCCcore/11.2.0
 
-export FILE=$1 # Input file with tab-separated sentences
-export SRC=$2 # Iso code for source language
-export TRG=$3 # Iso code for target language
+# export FILE=$1 # Input file with tab-separated sentences
+# export SRC=$2 # Iso code for source language
+# export TRG=$3 # Iso code for target language
+
+FILE=/scratch/hb-macocu/NMT_eval/TED2020.en-sq.tsv.dedup
+SRC=en
+TRG=sq
 
 echo "Processing $1"
 
 # Maybe you have to download the models first
 # See explanation: https://github.com/bitextor/bicleaner-ai#parameters
-export MODELS="bicleaner_models"
+export MODELS="/home1/s3412768/NMT_eval/bicleaner_models"
 
 JOBS=16
 # Set bicleaner jobs to number of GPUs if GPUs are available
