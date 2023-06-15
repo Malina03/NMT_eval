@@ -46,7 +46,7 @@ score (){
         --scol 1 --tcol 2 \
         --disable_minimal_length \
         --quiet \
-        - - $MODELS/$SRC-$TRG/metadata.yaml
+        -- $MODELS/$SRC-$TRG/metadata.yaml
 }
 
 export -f score
