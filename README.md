@@ -4,6 +4,8 @@ Overview of training NMT systems in the MaCoCu project.
 
 ## Setting up
 
+
+
 Clone the repo:
 
 ```
@@ -18,13 +20,17 @@ conda create -n nmt python=3.8
 conda activate nmt
 ```
 
-If you use the RUG Peregrine cluster, always load these modules:
+If you use the RUG Habrok cluster, always load these modules. If you are using an interactive node, node1 doesn't have all hunspell modules available (? as of 15.06.2023).
+
 
 ```
+module load Python/3.9.6-GCCcore-11.2.0
 module load CUDA
-module load GCC/10.2.0
-module load GCCcore/10.2.0
-module load CMake/3.18.4-GCCcore-10.2.0
+module load CMake/3.22.1-GCCcore-11.2.0
+module load hunspell/1.7.1-GCCcore-11.2.0
+module load GCC/11.2.0
+module load GCCcore/11.2.0
+
 ```
 
 For the NMT experiments, we use Marian:
@@ -41,9 +47,10 @@ For cleaning the data, we use bifixer and bicleaner-ai. If you are not intereste
 
 ```
 pip install bicleaner-ai
-pip install https://github.com/kpu/kenlm/archive/master.zip --install-option="--max_order 7"
+pip install https://github.com/kpu/kenlm/archive/master.zip"
 sudo apt install python-dev libhunspell-dev
 pip install bifixer
+pip install tensorflow
 ```
 
 Also check if there's an extra package available for the language you are interested in, e.g. for Bulgarian:
