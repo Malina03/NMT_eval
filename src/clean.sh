@@ -10,8 +10,10 @@ set -eu -o pipefail
 
 # Script for applying bifixer and bicleaner.
 
+export PATH="$PATH:/home1/s3412768/.local/bin"
 #load environment
 source /home1/s3412768/.envs/nmt/bin/activate
+
 # Load modules
 module load Python/3.9.6-GCCcore-11.2.0
 module load CUDA
