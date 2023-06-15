@@ -10,7 +10,9 @@ set -eu -o pipefail
 
 # Script for applying bifixer and bicleaner.
 
-# Load CUDA module to be sure
+#load environment
+source /home1/s3412768/.envs/nmt/bin/activate
+# Load modules
 module load Python/3.9.6-GCCcore-11.2.0
 module load CUDA
 module load CMake/3.22.1-GCCcore-11.2.0
