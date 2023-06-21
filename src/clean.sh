@@ -32,7 +32,8 @@ TRG="sq"
 
 # Maybe you have to download the models first
 # See explanation: https://github.com/bitextor/bicleaner-ai#parameters
-MODELS="/home1/s3412768/NMT_eval/bicleaner_models"
+# MODELS="/home1/s3412768/NMT_eval/bicleaner_models"
+MODELS="/home1/s3412768/.cache/huggingface/hub/models--bitextor--bicleaner-ai-full-en-sq/snapshots/*"
 
 JOBS=16
 # Set bicleaner jobs to number of GPUs if GPUs are available
@@ -46,7 +47,7 @@ score (){
         --scol 1 --tcol 2 \
         --disable_minimal_length \
         --quiet \
-        --$MODELS/$SRC-$TRG/metadata.yaml
+        --$MODELS/metadata.yaml
 }
 
 export -f score
