@@ -19,5 +19,5 @@ module load Python/3.9.6-GCCcore-11.2.0
 
 python $HOME/NMT_eval/src/multiple_near_dedup.py \
     --main_file $DATA_DIR/MaCoCuV1.en-sq.tsv \
-    --other_files $DATA_DIR/TED2020.tsv $DATA_DIR/QED.en-sq.tsv $DATA_DIR/WikiMatrix.en-sq.tsv $DATA_DIR/flores200.devtest.en-sq.tsv $DATA_DIR/flores200.dev.en-sq.tsv \
+    --other_files $DATA_DIR/TED2020.en-sq.tsv $DATA_DIR/QED.en-sq.tsv $DATA_DIR/WikiMatrix.en-sq.tsv $DATA_DIR/flores200.devtest.en-sq.tsv $DATA_DIR/flores200.dev.en-sq.tsv \
     --dedup either \

@@ -25,44 +25,8 @@ def main_near_dedup(file, out_file, remove_non_alpha, dedup):
     hashes = {}
     hashes2 = {}
     with open(out_file, 'w', encoding="utf-8") as out:
-        for line in open(file, 'r', encoding="utf-8"):
-            if dedup == "either":
-                # We deduplicate if either source or target already exists in the corpus
-                sent1 = line.strip("\n").lower().split('\t')[0].strip().translate(remove_non_alpha)
-                sent2 = line.strip("\n").lower().split('\t')[1].strip().translate(remove_non_alpha)
-                tmp1 = xxh64(unidecode(sent1)).hexdigest()
-                hsh1 = tmp1.split('\t')[-1]
-                tmp2 = xxh64(unidecode(sent2)).hexdigest()
-                hsh2 = tmp2.split('\t')[-1]
-                if hsh1 not in hashes and hsh2 not in hashes2:
-                    # print to out file
-                    out.write(line.strip())
-                    hashes[hsh1] = 1
-                    hashes2[hsh2] = 1
-            else:
-                # Otherwise we do it on both, source,
-                if dedup == "both":
-                    sent1 = line.strip("\n").lower().split('\t')[0].strip().translate(remove_non_alpha)
-                    sent2 = line.strip("\n").lower().split('\t')[1].strip().translate(remove_non_alpha)
-                    sent = sent1 + '\t' + sent2
-                elif dedup in ["source", "src"]:
-                    sent = line.strip("\n").lower().split('\t')[0].strip().translate(remove_non_alpha)
-                elif dedup in ["target", "tgt"]:
-                    sent = line.strip("\n").lower().split('\t')[1].strip().translate(remove_non_alpha)
-                else:
-                    raise ValueError("Illegal argument for -d")
-                # Hash and check
-                tmp = xxh64(unidecode(sent)).hexdigest()
-                hsh = tmp.split('\t')[-1]
-                if hsh not in hashes:
-                    # print to out file
-                    out.write(line.strip())
-                    hashes[hsh] = 1
-    return hashes, hashes2    
-
-def additional_near_dedup(file, out_file, hashes, hashes2, remove_non_alpha, dedup):
-        with open(out_file, 'w', encoding="utf-8") as out:
-            for line in open(file, 'r', encoding="utf-8"):
+        with open(file, 'r', encoding="utf-8") as f:
+            for line in f.readlines():
                 if dedup == "either":
                     # We deduplicate if either source or target already exists in the corpus
                     sent1 = line.strip("\n").lower().split('\t')[0].strip().translate(remove_non_alpha)
@@ -73,7 +37,7 @@ def additional_near_dedup(file, out_file, hashes, hashes2, remove_non_alpha, ded
                     hsh2 = tmp2.split('\t')[-1]
                     if hsh1 not in hashes and hsh2 not in hashes2:
                         # print to out file
-                        out.write(line.strip())
+                        out.write(line.strip() + '\n')
                         hashes[hsh1] = 1
                         hashes2[hsh2] = 1
                 else:
@@ -93,7 +57,44 @@ def additional_near_dedup(file, out_file, hashes, hashes2, remove_non_alpha, ded
                     hsh = tmp.split('\t')[-1]
                     if hsh not in hashes:
                         # print to out file
-                        out.write(line.strip())
+                        out.write(line.strip() + '\n')
+                        hashes[hsh] = 1
+    return hashes, hashes2    
+
+def additional_near_dedup(file, out_file, hashes, hashes2, remove_non_alpha, dedup):
+        with open(out_file, 'w', encoding="utf-8") as out:
+            for line in open(file, 'r', encoding="utf-8"):
+                if dedup == "either":
+                    # We deduplicate if either source or target already exists in the corpus
+                    sent1 = line.strip("\n").lower().split('\t')[0].strip().translate(remove_non_alpha)
+                    sent2 = line.strip("\n").lower().split('\t')[1].strip().translate(remove_non_alpha)
+                    tmp1 = xxh64(unidecode(sent1)).hexdigest()
+                    hsh1 = tmp1.split('\t')[-1]
+                    tmp2 = xxh64(unidecode(sent2)).hexdigest()
+                    hsh2 = tmp2.split('\t')[-1]
+                    if hsh1 not in hashes and hsh2 not in hashes2:
+                        # print to out file
+                        out.write(line.strip() + '\n')
+                        hashes[hsh1] = 1
+                        hashes2[hsh2] = 1
+                else:
+                    # Otherwise we do it on both, source,
+                    if dedup == "both":
+                        sent1 = line.strip("\n").lower().split('\t')[0].strip().translate(remove_non_alpha)
+                        sent2 = line.strip("\n").lower().split('\t')[1].strip().translate(remove_non_alpha)
+                        sent = sent1 + '\t' + sent2
+                    elif dedup in ["source", "src"]:
+                        sent = line.strip("\n").lower().split('\t')[0].strip().translate(remove_non_alpha)
+                    elif dedup in ["target", "tgt"]:
+                        sent = line.strip("\n").lower().split('\t')[1].strip().translate(remove_non_alpha)
+                    else:
+                        raise ValueError("Illegal argument for -d")
+                    # Hash and check
+                    tmp = xxh64(unidecode(sent)).hexdigest()
+                    hsh = tmp.split('\t')[-1]
+                    if hsh not in hashes:
+                        # print to out file
+                        out.write(line.strip() + '\n')
                         hashes[hsh] = 1
 
 if __name__ == "__main__":
