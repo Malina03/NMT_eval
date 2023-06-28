@@ -18,7 +18,7 @@ module load CUDA
 #load environment
 source /home1/s3412768/.envs/nmt/bin/activate
 
-root_dir="/scratch/hb-macocu/NMT_eval/en-sq/"
+root_dir="/scratch/hb-macocu/NMT_eval/en-sq"
 log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/train.log"
 
 python /home1/s3412768/NMT_eval/src/train.py \
