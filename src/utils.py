@@ -75,14 +75,14 @@ def get_train_args(args):
     )
     return train_args
 
-def load_data(file, args):
+def load_data(filename, args):
     # Load the data
     corpus_src = []
     corpus_tgt = []
-    source_lang = args.file.split('.')[1].split('-')[0]
-    target_lang = args.file.split('.')[1].split('-')[1]
+    source_lang = filename.split('.')[1].split('-')[0]
+    target_lang = filename.split('.')[1].split('-')[1]
     prefix = ""
-    with open(file, 'r', encoding="utf-8") as f:
+    with open(filename, 'r', encoding="utf-8") as f:
         for line in f:
             src, tgt = line.strip().split('\t')
             corpus_src.append(src)
