@@ -1,25 +1,30 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=11:59:59
+# SBATCH --time=00:29:59
+#SBATCH --job-name=en-sq
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:v100:1
 #SBATCH --mem=50G
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=rikvannoord@gmail.com
+#SBATCH --mail-user=m.chichirau@student.rug.nl
 
-# Train an NMT model using Marian
 set -eu -o pipefail
 
-# Read in arguments
-fol=$1 # Experiment folder where we save everything
-config=$2 # Config yaml file with experimental settings
+export PATH="$PATH:/home1/s3412768/.local/bin"
+#load environment
+source /home1/s3412768/.envs/nmt/bin/activate
 
-# Set up folders
-mkdir -p $fol
-mkdir -p ${fol}/vocab ${fol}/model ${fol}/bkp ${fol}/output
+# Load modules
+module purge
+module load Python/3.9.6-GCCcore-11.2.0
 
-# Train model - specifying the vocab like this automatically builds it
-marian-dev/build/marian -m ${fol}/model/model.npz --tsv --vocabs ${fol}/vocab/vocab.spm ${fol}/vocab/vocab.spm --config $config --valid-translation-output ${fol}/output/dev_epoch_{E}.out
+root_dir="/scratch/hb-macocu/NMT_eval/en-sq/"
+log_file="/home1/s3412768/NMT_eval/en-sq/logs/train.log"
 
-# If you want to fine-tune, you should add these arguments to the training call:
-#  --valid-reset-stalled --no-restore-corpus --ignore-model-config
+python /home1/s3412768/NMT_eval/src/train.sh \
+    --root_dir $root_dir \
+    --train_file $root_dir/MaCoCuV1.en-sq.tsv.dedup \
+    --dev_file $root_dir/flores200.dev.en-sq.tsv.dedup \
+    --wandb \
+    --model_name Helsinki-NLP/opus-mt-en-sq \
+    &> $log_file 
