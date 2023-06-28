@@ -9,7 +9,7 @@ def get_args():
     parser.add_argument("-root_dir", "--root_dir", required=True, type=str, help="Root directory.")
     # parser.add_argument("-logging_dir", "--logging_dir", required=False, type=str, default="...", help="Logging directory.")
     # parser.add_argument("-model_save_dir", "--model_save_dir", required=True, type=str, help="Path to the output directory where the model will be saved.")
-    parser.add_argument("checkpoint", "--checkpoint", required=False, type=str, help="Path to the checkpoint to fine-tune. If not provided, the model will be initialized from scratch.")
+    parser.add_argument("-checkpoint", "--checkpoint", required=False, type=str, help="Path to the checkpoint to fine-tune. If not provided, the model will be initialized from scratch.")
     parser.add_argument("-eval", "--eval", required=False, action="store_true", help="Whether to only evaluate the model.")
     parser.add_argument("-exp_type", "--exp_type", required=False, type=str, default="fine_tuning", help="Type of experiment. Can be 'fine_tuning' or 'from_scratch'.")
     parser.add_argument("-wandb", "--wandb", required=False, action="store_true", help="Whether to log the training process on wandb.")
@@ -36,7 +36,7 @@ def get_args():
     parser.add_argument("-save_total_limit", "--save_total_limit", required=False, type=int, default=1, help="Maximum number of checkpoints to save.")
     parser.add_argument("-save_steps", "--save_steps", required=False, type=int, default=1000, help="Save checkpoint every X updates steps.")
     parser.add_argument("-early_stopping_patience", "--early_stopping", required=False, type=int, default=3, help="Early stopping patience.")
-    parser.add_argument("label_smoothing", "--label_smoothing", required=False, type=float, default=0.1, help="Label smoothing.")
+    parser.add_argument("-label_smoothing", "--label_smoothing", required=False, type=float, default=0.1, help="Label smoothing.")
     parser.add_argument("-dropout", "--dropout", required=False, type=float, default=0.1, help="Dropout.")
     args = parser.parse_args()
     return args
