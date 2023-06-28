@@ -9,7 +9,7 @@
 #SBATCH --mail-user=m.chichirau@student.rug.nl
 
 #load environment
-source /home1/s3412768/.envs/nmt/bin/activate
+source $HOME/.envs/nmt/bin/activate
 
 # Load modules
 module load Python/3.9.6-GCCcore-11.2.0
