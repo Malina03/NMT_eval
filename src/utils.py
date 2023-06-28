@@ -79,8 +79,8 @@ def load_data(filename, args):
     # Load the data
     corpus_src = []
     corpus_tgt = []
-    source_lang = filename.split('.')[1].split('-')[0]
-    target_lang = filename.split('.')[1].split('-')[1]
+    # source_lang = filename.split('.')[1].split('-')[0]
+    # target_lang = filename.split('.')[1].split('-')[1]
     prefix = ""
     with open(filename, 'r', encoding="utf-8") as f:
         for line in f:
