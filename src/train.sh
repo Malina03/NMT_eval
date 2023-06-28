@@ -8,11 +8,14 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=m.chichirau@student.rug.nl
 
-#load environment
-source /home1/s3412768/.envs/nmt/bin/activate
 
 # Load modules
 module load Python/3.9.6-GCCcore-11.2.0
+
+#load environment
+source /home1/s3412768/.envs/nmt/bin/activate
+
+
 
 root_dir="/scratch/hb-macocu/NMT_eval/en-sq/"
 log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/train.log"
