@@ -8,6 +8,7 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=m.chichirau@student.rug.nl
 
+export PATH="$PATH:/home1/s3412768/.local/bin"
 
 # Load modules
 module load Python/3.9.6-GCCcore-11.2.0
