@@ -15,11 +15,10 @@ export PATH="$PATH:/home1/s3412768/.local/bin"
 source /home1/s3412768/.envs/nmt/bin/activate
 
 # Load modules
-module purge
 module load Python/3.9.6-GCCcore-11.2.0
 
 root_dir="/scratch/hb-macocu/NMT_eval/en-sq/"
-log_file="/home1/s3412768/NMT_eval/en-sq/logs/train.log"
+log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/train.log"
 
 python /home1/s3412768/NMT_eval/src/train.sh \
     --root_dir $root_dir \
