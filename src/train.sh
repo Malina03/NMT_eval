@@ -11,6 +11,7 @@
 
 # Load modules
 module load Python/3.9.6-GCCcore-11.2.0
+module load CUDA
 
 #load environment
 source /home1/s3412768/.envs/nmt/bin/activate
