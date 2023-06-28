@@ -8,7 +8,6 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=m.chichirau@student.rug.nl
 
-export PATH="$PATH:/home1/s3412768/.local/bin"
 #load environment
 source /home1/s3412768/.envs/nmt/bin/activate
 
