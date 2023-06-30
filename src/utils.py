@@ -2,6 +2,7 @@ import argparse
 from transformers import Seq2SeqTrainingArguments, AutoTokenizer
 import evaluate
 import os
+import torch
 
 
 def get_args():
@@ -42,6 +43,23 @@ def get_args():
     parser.add_argument("-label_smoothing", "--label_smoothing", required=False, type=float, default=0.1, help="Label smoothing.")
     args = parser.parse_args()
     return args
+
+
+class HFDataset(torch.utils.data.Dataset):
+    """Dataset for using HuggingFace Transformers."""
+
+    def __init__(self, encodings, labels):
+        self.encodings = encodings
+        self.labels = labels
+
+    def __getitem__(self, idx):
+        item = {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
+        item["labels"] = torch.tensor(self.labels[idx])
+        return item
+
+    def __len__(self):
+        return len(self.labels)
+
 
 def get_train_args(args):
     model_save_dir = os.path.join(args.root_dir, "models", args.model_name, args.exp_type)
@@ -93,8 +111,7 @@ def load_data(filename, args):
     model_inputs = tokenizer(inputs, max_length=args.max_length, truncation=True, padding=True)
     with tokenizer.as_target_tokenizer():
         labels = tokenizer(corpus_tgt, max_length=args.max_length, truncation=True, padding=True)
-    model_inputs["labels"] = labels["input_ids"]
-    return model_inputs
+    return HFDataset(model_inputs, labels["input_ids"])
             
 def compute_metrics(preds):
     labels_ids = preds.label_ids
