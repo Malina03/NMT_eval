@@ -1,6 +1,6 @@
 '''Fine-tune a pre-trained model from Huggingface on a new dataset.'''
 
-from transformers import AutoTokenizer, AutoConfig, EarlyStoppingCallback, AutoModelForSeq2SeqLM, Seq2SeqTrainer
+from transformers import AutoTokenizer, AutoConfig, EarlyStoppingCallback, AutoModelForSeq2SeqLM, Seq2SeqTrainer, DataCollatorForSeq2Seq
 from utils import get_args, get_train_args, load_data, compute_metrics
 import wandb
 
@@ -15,8 +15,9 @@ if __name__ == "__main__":
 
     
     # Load the data
-    train_dataset = load_data(args.train_file, args)
-    dev_dataset = load_data(args.dev_file, args)
+    tokenizer = AutoTokenizer.from_pretrained(args.model_name, max_length=args.max_length, truncation=True),
+    train_dataset = load_data(args.train_file, args, tokenizer)
+    dev_dataset = load_data(args.dev_file, args, tokenizer)
 
     # Load the model
     if args.checkpoint is None:
@@ -38,7 +39,8 @@ if __name__ == "__main__":
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=dev_dataset,
-        tokenizer=AutoTokenizer.from_pretrained(args.model_name, max_length=args.max_length, truncation=True, padding=True),
+        data_collator=DataCollatorForSeq2Seq(tokenizer, model=model)
+        tokenizer=AutoTokenizer.from_pretrained(args.model_name, max_length=args.max_length, truncation=True),
         compute_metrics=compute_metrics,
         callbacks=callbacks
     )

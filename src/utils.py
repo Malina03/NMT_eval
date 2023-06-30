@@ -2,7 +2,6 @@ import argparse
 from transformers import Seq2SeqTrainingArguments, AutoTokenizer
 import evaluate
 import os
-import torch
 
 
 def get_args():
@@ -45,20 +44,6 @@ def get_args():
     return args
 
 
-class HFDataset(torch.utils.data.Dataset):
-    """Dataset for using HuggingFace Transformers."""
-
-    def __init__(self, encodings, labels):
-        self.encodings = encodings
-        self.labels = labels
-
-    def __getitem__(self, idx):
-        item = {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
-        item["labels"] = torch.tensor(self.labels[idx])
-        return item
-
-    def __len__(self):
-        return len(self.labels)
 
 
 def get_train_args(args):
@@ -94,24 +79,17 @@ def get_train_args(args):
     )
     return train_args
 
-def load_data(filename, args):
+def load_data(filename, args, tokenizer):
     # Load the data
     corpus_src = []
     corpus_tgt = []
-    # source_lang = filename.split('.')[1].split('-')[0]
-    # target_lang = filename.split('.')[1].split('-')[1]
-    prefix = ""
     with open(filename, 'r', encoding="utf-8") as f:
         for line in f:
             src, tgt = line.strip().split('\t')
             corpus_src.append(src)
             corpus_tgt.append(tgt)
-    inputs = [prefix + src for src in corpus_src]
-    tokenizer = AutoTokenizer.from_pretrained(args.model_name, max_length=args.max_length, truncation=True, padding=True)
-    model_inputs = tokenizer(inputs, max_length=args.max_length, truncation=True, padding=True)
-    with tokenizer.as_target_tokenizer():
-        labels = tokenizer(corpus_tgt, max_length=args.max_length, truncation=True, padding=True)
-    return HFDataset(model_inputs, labels["input_ids"])
+    model_inputs = tokenizer(corpus_src, corpus_tgt, max_length=args.max_length, truncation=True)
+    return model_inputs
             
 def compute_metrics(preds):
     labels_ids = preds.label_ids
