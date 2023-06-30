@@ -39,7 +39,7 @@ if __name__ == "__main__":
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=dev_dataset,
-        data_collator=DataCollatorForSeq2Seq(tokenizer, model=model)
+        data_collator=DataCollatorForSeq2Seq(tokenizer, model=model),
         tokenizer=AutoTokenizer.from_pretrained(args.model_name, max_length=args.max_length, truncation=True),
         compute_metrics=compute_metrics,
         callbacks=callbacks
