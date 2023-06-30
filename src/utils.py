@@ -72,7 +72,7 @@ def get_train_args(args):
         max_grad_norm=args.max_grad_norm,
         warmup_steps=args.warmup_steps,
         weight_decay=args.weight_decay,
-        dropout_rate=args.dropout,
+        # dropout_rate=args.dropout,
         label_smoothing_factor=args.label_smoothing,
         early_stopping_patience=args.early_stopping,
         report_to="wandb" if args.wandb else "none",
