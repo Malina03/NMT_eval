@@ -18,7 +18,7 @@ module load PyTorch/1.12.1-foss-2022a-CUDA-11.7.0
 
 
 #load environment
-source /home1/s3412768/.envs/nmt/bin/activate
+source /home1/s3412768/.envs/nmt2/bin/activate
 
 root_dir="/scratch/hb-macocu/NMT_eval/en-sq"
 log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/train.log"
