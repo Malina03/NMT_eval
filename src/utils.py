@@ -40,7 +40,6 @@ def get_args():
     parser.add_argument("-save_steps", "--save_steps", required=False, type=int, default=1000, help="Save checkpoint every X updates steps.")
     parser.add_argument("-early_stopping_patience", "--early_stopping", required=False, type=int, default=3, help="Early stopping patience.")
     parser.add_argument("-label_smoothing", "--label_smoothing", required=False, type=float, default=0.1, help="Label smoothing.")
-    parser.add_argument("-dropout", "--dropout", required=False, type=float, default=0.1, help="Dropout.")
     args = parser.parse_args()
     return args
 
@@ -72,9 +71,7 @@ def get_train_args(args):
         max_grad_norm=args.max_grad_norm,
         warmup_steps=args.warmup_steps,
         weight_decay=args.weight_decay,
-        # dropout_rate=args.dropout,
         label_smoothing_factor=args.label_smoothing,
-        early_stopping_patience=args.early_stopping,
         report_to="wandb" if args.wandb else "none",
     )
     return train_args
