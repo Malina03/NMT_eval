@@ -29,7 +29,7 @@ if __name__ == "__main__":
     training_args = get_train_args(args)
 
     callbacks = [
-        EarlyStoppingCallback(early_stopping_patience=args.early_stopping_patience)
+        EarlyStoppingCallback(early_stopping_patience=args.early_stopping)
     ]
     
     # Instantiate the trainer
