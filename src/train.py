@@ -1,6 +1,6 @@
 '''Fine-tune a pre-trained model from Huggingface on a new dataset.'''
 
-from transformers import AutoTokenizer, AutoConfig, EarlyStoppingCallback, TFAutoModelForSeq2SeqLM, Seq2SeqTrainer
+from transformers import AutoTokenizer, AutoConfig, EarlyStoppingCallback, AutoModelForSeq2SeqLM, Seq2SeqTrainer
 from utils import get_args, get_train_args, load_data, compute_metrics
 import wandb
 
@@ -21,9 +21,9 @@ if __name__ == "__main__":
     # Load the model
     if args.checkpoint is None:
         config = AutoConfig.from_pretrained(args.model_name)
-        model = TFAutoModelForSeq2SeqLM.from_pretrained(args.model_name, config=config)
+        model = AutoModelForSeq2SeqLM.from_pretrained(args.model_name, config=config)
     else:
-        model = TFAutoModelForSeq2SeqLM.from_pretrained(args.checkpoint, local_files_only=True)
+        model = AutoModelForSeq2SeqLM.from_pretrained(args.checkpoint, local_files_only=True)
 
     # Set the training arguments
     training_args = get_train_args(args)

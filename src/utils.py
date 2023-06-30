@@ -27,7 +27,7 @@ def get_args():
     parser.add_argument("-adam_epsilon", "--adam_epsilon", required=False, type=float, default=1e-9, help="Epsilon for Adam optimizer.")
     parser.add_argument("-adam_beta1", "--adam_beta1", required=False, type=float, default=0.9, help="Beta1 for Adam optimizer.")
     parser.add_argument("-adam_beta2", "--adam_beta2", required=False, type=float, default=0.98, help="Beta2 for Adam optimizer.")
-    parser.add_argument("-metric_for_best_model", "--metric_for_best_model", required=False, type=str, default="bleu", help="Metric to use to select the best model.")
+    parser.add_argument("-metric_for_best_model", "--metric_for_best_model", required=False, type=str, default="val_loss", help="Metric to use to select the best model.")
     parser.add_argument("-evaluation_strategy", "--evaluation_strategy", required=False, type=str, default="epoch", help="Strategy to adopt for evaluation during training.")
     parser.add_argument("-save_strategy", "--save_strategy", required=False, type=str, default="epoch", help="Strategy to adopt for saving checkpoints during training.")
     parser.add_argument("-learning_rate", "--learning_rate", required=False, type=float, default=3e-5, help="Learning rate.")
