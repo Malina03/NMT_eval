@@ -2,6 +2,7 @@ import argparse
 from transformers import Seq2SeqTrainingArguments, AutoTokenizer
 import evaluate
 import os
+import torch
 
 
 def get_args():
@@ -44,6 +45,20 @@ def get_args():
     return args
 
 
+class HFDataset(torch.utils.data.Dataset):
+    """Dataset for using HuggingFace Transformers."""
+
+    def __init__(self, encodings, decoder_input_ids):
+        self.encodings = encodings
+        self.decoder_input_ids = decoder_input_ids
+
+    def __getitem__(self, idx):
+        item = {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
+        item["labels"] = torch.tensor(self.decoder_input_ids[idx])
+        return item
+
+    def __len__(self):
+        return len(self.decoder_input_ids)
 
 
 def get_train_args(args):
@@ -88,8 +103,9 @@ def load_data(filename, args, tokenizer):
             src, tgt = line.strip().split('\t')
             corpus_src.append(src)
             corpus_tgt.append(tgt)
-    model_inputs = tokenizer(corpus_src, corpus_tgt, max_length=args.max_length, truncation=True)
-    return model_inputs
+    model_inputs = tokenizer(corpus_src, max_length=args.max_length, truncation=True)
+    encoded_tgt = tokenizer(text_target=corpus_tgt, max_length=args.max_length, truncation=True)
+    return HFDataset(model_inputs, encoded_tgt["input_ids"])
             
 def compute_metrics(preds):
     labels_ids = preds.label_ids
@@ -98,7 +114,7 @@ def compute_metrics(preds):
     else:
         preds_ids = preds.predictions
     preds_ids = preds.predictions.argmax(-1)
-    decode_preds = tokenizer.batch_decode(preds_ids, skip_special_tokens=True)
+    decode_preds = tokenizer.batch_decode(preds_ids, use_source_tokenizer=True, skip_special_tokens=True)
     labels_ids[labels_ids == -100] = tokenizer.pad_token_id
     decode_labels = tokenizer.batch_decode(labels_ids, skip_special_tokens=True)
     decode_preds = [pred.strip() for pred in decode_preds]
