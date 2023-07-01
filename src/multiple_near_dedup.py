@@ -10,6 +10,7 @@ import argparse
 from unicodedata import category as cat
 from unidecode import unidecode
 from xxhash import xxh64
+import random
 
 def create_arg_parser():
     parser = argparse.ArgumentParser()
@@ -111,3 +112,14 @@ if __name__ == "__main__":
     if args.other_files:
         for f in args.other_files:
             additional_near_dedup(f, f + ".dedup", hashes, hashes2, remove_non_alpha, args.dedup)
+    
+    # if new files are larger than 10k lines, select 10k random lines
+    if args.other_files:
+        for f in args.other_files:
+            if sum(1 for line in open(f + ".dedup", 'r', encoding="utf-8")) > 10000:
+                with open(f + ".dedup", 'r', encoding="utf-8") as source:
+                    data = [ (random.random(), line) for line in source ]
+                data.sort()
+                with open(f + ".dedup.test", 'w', encoding="utf-8") as test_only:
+                    for _, line in data[:10000]:
+                        test_only.write( line )
