@@ -76,7 +76,7 @@ def get_train_args(args):
         save_steps=args.save_steps,
         num_train_epochs=args.num_train_epochs,
         per_device_train_batch_size=args.batch_size,
-        per_device_eval_batch_size=args.batch_size *2,
+        per_device_eval_batch_size=args.batch_size,
         gradient_accumulation_steps=args.gradient_accumulation_steps,
         metric_for_best_model=args.metric_for_best_model,
         evaluation_strategy=args.evaluation_strategy,
