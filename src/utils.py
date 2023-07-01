@@ -62,10 +62,10 @@ class HFDataset(torch.utils.data.Dataset):
 
 
 def get_train_args(args):
-    model_save_dir = os.path.join(args.root_dir, "models", args.model_name, args.exp_type)
+    model_save_dir = os.path.join(args.root_dir, "models", args.model_name, args.exp_type, args.train_file.split("/")[-1].split(".")[0])
     if not os.path.exists(model_save_dir):
         os.makedirs(model_save_dir)
-    logging_dir = os.path.join(args.root_dir, "logs", args.model_name, args.exp_type)
+    logging_dir = os.path.join(args.root_dir, "logs", args.model_name, args.exp_type, args.train_file.split("/")[-1].split(".")[0])
     if not os.path.exists(logging_dir):
         os.makedirs(logging_dir)
     train_args = Seq2SeqTrainingArguments(
