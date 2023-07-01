@@ -98,11 +98,17 @@ def load_data(filename, args, tokenizer):
     # Load the data
     corpus_src = []
     corpus_tgt = []
+    error_count = 0
     with open(filename, 'r', encoding="utf-8") as f:
         for line in f:
-            src, tgt = line.strip().split('\t')
-            corpus_src.append(src)
-            corpus_tgt.append(tgt)
+            try:
+                src, tgt = line.strip().split('\t')
+                corpus_src.append(src)
+                corpus_tgt.append(tgt)
+            except:
+                error_count += 1
+                continue
+    print("Error count: ", error_count)
     model_inputs = tokenizer(corpus_src, max_length=args.max_length, truncation=True)
     encoded_tgt = tokenizer(text_target=corpus_tgt, max_length=args.max_length, truncation=True)
     return HFDataset(model_inputs, encoded_tgt["input_ids"])
