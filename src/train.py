@@ -15,9 +15,9 @@ if __name__ == "__main__":
 
     
     # Load the data
-    tokenizer = AutoTokenizer.from_pretrained(args.model_name, max_length=args.max_length, truncation=True),
-    train_dataset = load_data(args.train_file, args, tokenizer)
-    dev_dataset= load_data(args.dev_file, args, tokenizer)
+    tokenizer = AutoTokenizer.from_pretrained(args.model_name, max_length=args.max_length, truncation=True)
+    train_dataset = load_data(args.train_file, args, tokenizer=tokenizer)
+    dev_dataset= load_data(args.dev_file, args, tokenizer=tokenizer)
 
     # Load the model
     if args.checkpoint is None:
