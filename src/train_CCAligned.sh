@@ -32,6 +32,6 @@ python /home1/s3412768/NMT_eval/src/train.py \
     --wandb \
     --gradient_accumulation_steps 2 \
     --batch_size 16 \
-    --exp_type fine_tune2 \
+    --exp_type fine_tuning2 \
     --model_name Helsinki-NLP/opus-mt-en-sq \
     &> $log_file 

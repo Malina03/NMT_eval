@@ -1,7 +1,7 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=50:00:00
-#SBATCH --job-name=en-sq
+#SBATCH --time=24:00:00
+#SBATCH --job-name=ccA
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:a100:1
 #SBATCH --mem=50G
@@ -20,10 +20,10 @@ module load PyTorch/1.12.1-foss-2022a-CUDA-11.7.0
 #load environment
 source /home1/s3412768/.envs/nmt2/bin/activate
 
-corpus="MaCoCuV1"
+corpus="CCAligned"
 
 root_dir="/scratch/hb-macocu/NMT_eval/en-sq"
-log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/fine_tune2/train_${corpus}.log"
+log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/fine_tune/train_${corpus}.log"
 
 python /home1/s3412768/NMT_eval/src/train.py \
     --root_dir $root_dir \
@@ -32,6 +32,6 @@ python /home1/s3412768/NMT_eval/src/train.py \
     --wandb \
     --gradient_accumulation_steps 2 \
     --batch_size 16 \
-    --exp_type fine_tuning2 \
+    --exp_type fine_tuning \
     --model_name Helsinki-NLP/opus-mt-en-sq \
     &> $log_file 
