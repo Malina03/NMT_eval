@@ -9,7 +9,7 @@ if __name__ == "__main__":
     args = get_args()
     if args.wandb:
         # only log the training process 
-        wandb_name = f"{args.model_name.split('/')[1][-5:]}_{args.exp_type}_{args.train_file.split('/')[-1].split('.')[0]}"
+        wandb_name = f"{args.exp_type}_{args.train_file.split('/')[-1].split('.')[0]}"
         # Initialize wandb
         wandb.init(project="NMT_eval", name=wandb_name, config=args)
 
