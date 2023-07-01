@@ -107,18 +107,6 @@ def load_data(filename, args, tokenizer):
     encoded_tgt = tokenizer(text_target=corpus_tgt, max_length=args.max_length, truncation=True)
     return HFDataset(model_inputs, encoded_tgt["input_ids"])
             
-def load_data(filename, max_length, tokenizer):
-    # Load the data
-    corpus_src = []
-    corpus_tgt = []
-    with open(filename, 'r', encoding="utf-8") as f:
-        for line in f:
-            tgt, src = line.strip().split('\t')
-            corpus_src.append(src)
-            corpus_tgt.append(tgt)
-    model_inputs = tokenizer(corpus_src, max_length=max_length, truncation=True)
-    encoded_tgt = tokenizer(text_target=corpus_tgt, max_length=max_length, truncation=True)
-    return HFDataset(model_inputs, encoded_tgt["input_ids"])
 
 def compute_metrics(preds):
     labels_ids = preds.label_ids
