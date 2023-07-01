@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-# SBATCH --time=00:29:59
+# SBATCH --time=12:59:59
 #SBATCH --job-name=en-sq
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:v100:1

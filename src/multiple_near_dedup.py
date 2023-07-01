@@ -105,11 +105,11 @@ if __name__ == "__main__":
     tbl = [chr(i) for i in range(sys.maxunicode) if not cat(chr(i)).startswith('L')]
     remove_non_alpha = str.maketrans('', '', ''.join(tbl))
 
-    # Do near-deduplication on main files
+    # Do near-deduplication on main file individually
     hashes = {}
     hashes2 = {}
     for f in args.main_files:
-        h1, h2 = main_near_dedup(args.main_file, args.main_file + ".dedup", remove_non_alpha, args.dedup)
+        h1, h2 = main_near_dedup(f, f + ".dedup", remove_non_alpha, args.dedup)
         hashes.update(h1)
         hashes2.update(h2)
 
