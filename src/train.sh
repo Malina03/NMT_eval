@@ -25,7 +25,7 @@ log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/train.log"
 
 python /home1/s3412768/NMT_eval/src/train.py \
     --root_dir $root_dir \
-    --train_file $root_dir/data/MaCoCuV2.en-sq.tsv.dedup \
+    --train_file $root_dir/data/MaCoCuV1.en-sq.tsv.dedup \
     --dev_file $root_dir/data/flores200.dev.en-sq.tsv.dedup \
     --wandb \
     --model_name Helsinki-NLP/opus-mt-en-sq \
