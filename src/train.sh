@@ -3,7 +3,7 @@
 #SBATCH --time=50:00:00
 #SBATCH --job-name=en-sq
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:v100:1
+#SBATCH --gres=gpu:a100.40gb:1
 #SBATCH --mem=50G
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=m.chichirau@student.rug.nl
