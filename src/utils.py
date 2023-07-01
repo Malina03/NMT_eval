@@ -24,7 +24,8 @@ def get_args():
    
     parser.add_argument("-seed", "--seed", required=False, type=int, default=1, help="Random seed.")
     parser.add_argument("-num_train_epochs", "--num_train_epochs", required=False, type=int, default=10, help="Number of training epochs.")
-    parser.add_argument("-batch_size", "--batch_size", required=False, type=int, default=32, help="Batch size.")
+    parser.add_argument("-batch_size", "--batch_size", required=False, type=int, default=16, help="Batch size.")
+    parser.add_argument("-gradient_accumulation_steps", "--gradient_accumulation_steps", required=False, type=int, default=1, help="Number of updates steps to accumulate before performing a backward/update pass.")
     parser.add_argument("-adam_epsilon", "--adam_epsilon", required=False, type=float, default=1e-9, help="Epsilon for Adam optimizer.")
     parser.add_argument("-adam_beta1", "--adam_beta1", required=False, type=float, default=0.9, help="Beta1 for Adam optimizer.")
     parser.add_argument("-adam_beta2", "--adam_beta2", required=False, type=float, default=0.98, help="Beta2 for Adam optimizer.")
@@ -76,6 +77,7 @@ def get_train_args(args):
         num_train_epochs=args.num_train_epochs,
         per_device_train_batch_size=args.batch_size,
         per_device_eval_batch_size=args.batch_size *2,
+        gradient_accumulation_steps=args.gradient_accumulation_steps,
         metric_for_best_model=args.metric_for_best_model,
         evaluation_strategy=args.evaluation_strategy,
         save_strategy=args.save_strategy,
