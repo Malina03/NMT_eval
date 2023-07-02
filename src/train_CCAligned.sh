@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=50:00:00
+#SBATCH --time=24:00:00
 #SBATCH --job-name=ccA
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:a100:1
@@ -25,7 +25,7 @@ source /home1/s3412768/.envs/nmt2/bin/activate
 corpus="CCAligned"
 
 root_dir="/scratch/hb-macocu/NMT_eval/en-sq"
-log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/fine_tune2/train_${corpus}.log"
+log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/fine_tune/train_${corpus}.log"
 
 python /home1/s3412768/NMT_eval/src/train.py \
     --root_dir $root_dir \
@@ -34,6 +34,12 @@ python /home1/s3412768/NMT_eval/src/train.py \
     --wandb \
     --gradient_accumulation_steps 2 \
     --batch_size 8 \
-    --exp_type fine_tuning2 \
+    --gradient_checkpointing \
+    --adafactor \
+    --fp16 \
+    --evaluation_steps 5000 \
+    --save_strategy steps \
+    --evaluation_strategy steps \
+    --exp_type fine_tuning \
     --model_name Helsinki-NLP/opus-mt-en-sq \
     &> $log_file 
