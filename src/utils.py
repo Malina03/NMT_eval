@@ -155,9 +155,9 @@ def compute_metrics(eval_preds, tokenizer):
     decode_labels = [label.strip() for label in decode_labels]
 
     print("decode_preds: ")
-    print(decode_preds[:25])
+    print(decode_preds[:10])
     print("\n \n decode_labels: ")
-    print(decode_labels[:25])
+    print(decode_labels[:10])
 
     results = {}
     chrf = CHRF()
