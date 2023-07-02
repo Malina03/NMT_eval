@@ -37,6 +37,7 @@ python /home1/s3412768/NMT_eval/src/train.py \
     --gradient_checkpointing \
     --adafactor \
     --fp16 \
+    --evaluation_steps 1000 \
     --save_strategy steps \
     --evaluation_strategy steps \
     --exp_type fine_tuning \
