@@ -4,6 +4,7 @@ from transformers import AutoTokenizer, AutoConfig, EarlyStoppingCallback, AutoM
 from utils import get_args, get_train_args, load_data, compute_metrics
 import wandb
 from functools import partial
+import os
 
 if __name__ == "__main__":
     
@@ -42,15 +43,20 @@ if __name__ == "__main__":
         eval_dataset=dev_dataset,
         data_collator=DataCollatorForSeq2Seq(tokenizer, model=model),
         tokenizer=tokenizer,
-        compute_metrics=partial(compute_metrics, args, tokenizer=tokenizer),
+        compute_metrics=partial(compute_metrics, tokenizer=tokenizer),
         callbacks=callbacks
     )
 
     if args.eval:
-        metrics=trainer.evaluate()
+        metrics, predictions=trainer.evaluate()
         print("\nInfo:\n", metrics, "\n")
+        logging_dir = os.path.join(args.root_dir, "logs", args.model_name, args.exp_type)
+        eval_corpus = os.path.join(logging_dir, args.eval_file.split("/")[-1].split(".")[0])
+        with open(os.path.join(logging_dir, f"${eval_corpus}_predictions.txt"), "w") as f:
+            for pred in predictions:
+                f.write(pred + "\n")
     else:
-        metrics = trainer.train()
+        metrics,_ = trainer.train()
         print("\nInfo:\n", metrics, "\n")
 
 

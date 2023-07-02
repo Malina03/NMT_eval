@@ -124,7 +124,7 @@ def load_data(filename, args, tokenizer):
     return HFDataset(model_inputs, encoded_tgt["input_ids"])
             
 
-def compute_metrics(eval_preds, args, tokenizer):
+def compute_metrics(eval_preds, tokenizer):
     preds, labels = eval_preds
 
     if isinstance(preds, tuple):
@@ -145,14 +145,6 @@ def compute_metrics(eval_preds, args, tokenizer):
     print("\n \n decode_labels: ")
     print(decode_labels[:10])
 
-    if args.eval:
-        #write to file the predictions
-        logging_dir = os.path.join(args.root_dir, "logs", args.model_name, args.exp_type)
-        eval_corpus = os.path.join(logging_dir, args.eval_file.split("/")[-1].split(".")[0])
-        with open(os.path.join(logging_dir, f"${eval_corpus}_predictions.txt"), "w") as f:
-            for pred in decode_preds:
-                f.write(pred + "\n")
-
     results = {}
     chrf = CHRF()
     bleu = BLEU()
@@ -161,5 +153,6 @@ def compute_metrics(eval_preds, args, tokenizer):
     results["bleu"] = bleu.corpus_score(decode_preds, decode_labels).score
     results["chrf"] = chrf.corpus_score(decode_preds, decode_labels).score
     results["ter"] = ter.corpus_score(decode_preds, decode_labels).score
-    return results
+
+    return results, decode_preds
 
