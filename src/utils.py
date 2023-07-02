@@ -26,6 +26,7 @@ def get_args():
     parser.add_argument("-num_train_epochs", "--num_train_epochs", required=False, type=int, default=10, help="Number of training epochs.")
     parser.add_argument("-batch_size", "--batch_size", required=False, type=int, default=16, help="Batch size.")
     parser.add_argument("-gradient_accumulation_steps", "--gradient_accumulation_steps", required=False, type=int, default=1, help="Number of updates steps to accumulate before performing a backward/update pass.")
+    parser.add_argument("-gradient_checkpointing", "--gradient_checkpointing", required=False, action="store_true", help="Whether to use gradient checkpointing.")
     parser.add_argument("-adam_epsilon", "--adam_epsilon", required=False, type=float, default=1e-9, help="Epsilon for Adam optimizer.")
     parser.add_argument("-adam_beta1", "--adam_beta1", required=False, type=float, default=0.9, help="Beta1 for Adam optimizer.")
     parser.add_argument("-adam_beta2", "--adam_beta2", required=False, type=float, default=0.98, help="Beta2 for Adam optimizer.")
@@ -43,6 +44,7 @@ def get_args():
     parser.add_argument("-early_stopping", "--early_stopping", required=False, type=int, default=1, help="Early stopping patience.")
     parser.add_argument("-label_smoothing", "--label_smoothing", required=False, type=float, default=0.1, help="Label smoothing.")
     parser.add_argument("-fp16", "--fp16", required=False, action="store_true", help="Whether to use fp16.")
+    parser.add_argument("-adafactor", "--adafactor", required=False, action="store_true", help="Whether to use AdaFactor.")
     args = parser.parse_args()
     return args
 
@@ -94,6 +96,8 @@ def get_train_args(args):
         weight_decay=args.weight_decay,
         label_smoothing_factor=args.label_smoothing,
         fp16=args.fp16,
+        gradient_checkpointing=args.gradient_checkpointing,
+        adafactor=args.adafactor,
         report_to="wandb" if args.wandb else "none",
     )
     return train_args

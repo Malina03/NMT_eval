@@ -34,6 +34,9 @@ python /home1/s3412768/NMT_eval/src/train.py \
     --wandb \
     --gradient_accumulation_steps 2 \
     --batch_size 8 \
+    --gradient_checkpointing \
+    --adafactor \
+    --fp16 \
     --save_strategy steps \
     --evaluation_strategy steps \
     --exp_type fine_tuning \
