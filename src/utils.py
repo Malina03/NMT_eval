@@ -76,6 +76,7 @@ def get_train_args(args):
         output_dir=model_save_dir,
         logging_dir=logging_dir,
         logging_steps=args.logging_steps,
+        eval_steps=args.evaluation_steps,
         save_steps=args.save_steps,
         num_train_epochs=args.num_train_epochs,
         per_device_train_batch_size=args.batch_size,
@@ -124,6 +125,7 @@ def load_data(filename, args, tokenizer):
 
 def compute_metrics(eval_preds, tokenizer):
     preds, labels = eval_preds
+    
     print("eval_preds: ")
     print(eval_preds)
     print("\n   \n preds: ")
