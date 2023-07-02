@@ -119,8 +119,8 @@ def load_data(filename, args, tokenizer):
                 error_count += 1
                 continue
     print("Error count: ", error_count)
-    model_inputs = tokenizer(corpus_src, max_length=args.max_length, truncation=True, padding=True)
-    encoded_tgt = tokenizer(text_target=corpus_tgt, max_length=args.max_length, truncation=True, padding=True)
+    model_inputs = tokenizer(corpus_src, max_length=args.max_length, truncation=True)
+    encoded_tgt = tokenizer(text_target=corpus_tgt, max_length=args.max_length, truncation=True)
     return HFDataset(model_inputs, encoded_tgt["input_ids"])
             
 
@@ -137,7 +137,7 @@ def compute_metrics(eval_preds, args, tokenizer):
     decode_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
     # for pred in decode_preds remove second sentence if there is one
 
-    decode_preds = [pred.strip() for pred in decode_preds]
+    decode_preds = ['.'.join(pred.strip().split('.')[0],'') for pred in decode_preds]
     decode_labels = [label.strip() for label in decode_labels]
 
     print("decode_preds: ")
