@@ -143,7 +143,7 @@ def compute_metrics(eval_preds, tokenizer):
     if len(preds.shape) == 3:
         print("preds is 3d")
         preds = preds.argmax(axis=-1)
-    pred_ids = preds.predictions.argmax(-1)
+    pred_ids = preds.argmax(-1)
     print("pred_ids: ")
     print(pred_ids)
     decode_preds = tokenizer.batch_decode(pred_ids, use_source_tokenizer=True, skip_special_tokens=True)
