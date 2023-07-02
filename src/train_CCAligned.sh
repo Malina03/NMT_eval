@@ -33,7 +33,7 @@ python /home1/s3412768/NMT_eval/src/train.py \
     --dev_file $root_dir/data/flores200.dev.en-sq.tsv.dedup \
     --wandb \
     --gradient_accumulation_steps 2 \
-    --batch_size 16 \
+    --batch_size 8 \
     --exp_type fine_tuning2 \
     --model_name Helsinki-NLP/opus-mt-en-sq \
     &> $log_file 
