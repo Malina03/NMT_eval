@@ -16,6 +16,8 @@ module purge
 module load PyTorch/1.12.1-foss-2022a-CUDA-11.7.0
 # module load TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
 
+export PYTORCH_CUDA_ALLOC_CONF=garbage_collection_threshold:0.6,max_split_size_mb:128
+export CUDA_VISIBLE_DEVICES=0 
 
 #load environment
 source /home1/s3412768/.envs/nmt2/bin/activate
