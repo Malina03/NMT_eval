@@ -1,7 +1,7 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=1:00:00
-#SBATCH --job-name=fp16_MacoCuV1
+#SBATCH --time=2:00:00
+#SBATCH --job-name=test_MaCoCuV1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:a100:1
 #SBATCH --mem=50G
@@ -34,11 +34,12 @@ python /home1/s3412768/NMT_eval/src/train.py \
     --wandb \
     --gradient_accumulation_steps 2 \
     --batch_size 8 \
+    --gradient_checkpointing \
+    --adafactor \
+    --fp16 \
+    --evaluation_steps 5000 \
     --save_strategy steps \
     --evaluation_strategy steps \
-    --evaluation_steps 1000 \
-    --gradient_checkpointing \
-    --fp16 \
     --exp_type fine_tuning2 \
     --model_name Helsinki-NLP/opus-mt-en-sq \
     &> $log_file 
