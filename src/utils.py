@@ -150,9 +150,9 @@ def compute_metrics(eval_preds, tokenizer):
     bleu = BLEU()
     ter = TER()
     
-    results["bleu"] = bleu.corpus_score(decode_preds, decode_labels).score
-    results["chrf"] = chrf.corpus_score(decode_preds, decode_labels).score
-    results["ter"] = ter.corpus_score(decode_preds, decode_labels).score
+    results["bleu"] = bleu.corpus_score(decode_preds, [decode_labels]).score
+    results["chrf"] = chrf.corpus_score(decode_preds, [decode_labels]).score
+    results["ter"] = ter.corpus_score(decode_preds, [decode_labels]).score
 
     return results, decode_preds
 
