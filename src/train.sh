@@ -1,7 +1,7 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=50:00:00
-#SBATCH --job-name=en-sq
+#SBATCH --time=12:00:00
+#SBATCH --job-name=fp16_MacoCuV1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:a100:1
 #SBATCH --mem=50G
@@ -33,7 +33,10 @@ python /home1/s3412768/NMT_eval/src/train.py \
     --dev_file $root_dir/data/flores200.dev.en-sq.tsv.dedup \
     --wandb \
     --gradient_accumulation_steps 2 \
-    --batch_size 16 \
+    --batch_size 8 \
+    --save_strategy steps \
+    --eval_strategy steps \
+    --fp16 \
     --exp_type fine_tuning2 \
     --model_name Helsinki-NLP/opus-mt-en-sq \
     &> $log_file 
