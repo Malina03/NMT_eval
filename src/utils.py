@@ -122,22 +122,26 @@ def load_data(filename, args, tokenizer):
     return HFDataset(model_inputs, encoded_tgt["input_ids"])
             
 
-def compute_metrics(preds, tokenizer):
-    labels_ids = preds.label_ids
-    if isinstance(preds.predictions, tuple):
-        preds_ids = preds.predictions[0]
-    else:
-        preds_ids = preds.predictions
-    preds_ids = preds.predictions.argmax(-1)
-    decode_preds = tokenizer.batch_decode(preds_ids, use_source_tokenizer=True, skip_special_tokens=True)
-    labels_ids[labels_ids == -100] = tokenizer.pad_token_id
-    decode_labels = tokenizer.batch_decode(labels_ids, skip_special_tokens=True)
+def compute_metrics(eval_preds, tokenizer):
+    preds, labels = eval_preds
+
+    if isinstance(preds, tuple):
+        preds = preds[0]
+    # preds_ids = preds.predictions.argmax(-1)
+    decode_preds = tokenizer.batch_decode(preds, use_source_tokenizer=True, skip_special_tokens=True)
+    
+    labels[labels == -100] = tokenizer.pad_token_id
+    decode_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
+
     decode_preds = [pred.strip() for pred in decode_preds]
     decode_labels = [label.strip() for label in decode_labels]
+
     results = {}
     chrf = evaluate.load("chrf")
     bleu = evaluate.load("bleu")
+    ter = evaluate.load("ter")
     results["bleu"] = bleu.compute(predictions=decode_preds, references=decode_labels)
     results["chrf"] = chrf.compute(predictions=decode_preds, references=decode_labels)
+    results["ter"] = ter.compute(predictions=decode_preds, references=decode_labels)
     return results
 
