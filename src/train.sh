@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=2:00:00
+#SBATCH --time=1:00:00
 #SBATCH --job-name=fp16_MacoCuV1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:a100:1
@@ -36,6 +36,7 @@ python /home1/s3412768/NMT_eval/src/train.py \
     --batch_size 8 \
     --save_strategy steps \
     --evaluation_strategy steps \
+    --evaluation_steps 1000 \
     --gradient_checkpointing \
     --fp16 \
     --exp_type fine_tuning2 \

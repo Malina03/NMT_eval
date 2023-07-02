@@ -124,6 +124,12 @@ def load_data(filename, args, tokenizer):
 
 def compute_metrics(eval_preds, tokenizer):
     preds, labels = eval_preds
+    print("eval_preds: ")
+    print(eval_preds)
+    print("\n   \n preds: ")
+    print(preds)
+    print("\n \n labels: ")
+    print(labels)
 
     if isinstance(preds, tuple):
         preds = preds[0]
