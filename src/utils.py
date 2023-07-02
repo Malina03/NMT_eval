@@ -118,7 +118,7 @@ def load_data(filename, args, tokenizer):
     return HFDataset(model_inputs, encoded_tgt["input_ids"])
             
 
-def compute_metrics(preds):
+def compute_metrics(preds, tokenizer):
     labels_ids = preds.label_ids
     if isinstance(preds.predictions, tuple):
         preds_ids = preds.predictions[0]

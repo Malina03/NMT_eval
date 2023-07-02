@@ -3,6 +3,7 @@
 from transformers import AutoTokenizer, AutoConfig, EarlyStoppingCallback, AutoModelForSeq2SeqLM, Seq2SeqTrainer, DataCollatorForSeq2Seq
 from utils import get_args, get_train_args, load_data, compute_metrics
 import wandb
+from functools import partial
 
 if __name__ == "__main__":
     
@@ -40,8 +41,8 @@ if __name__ == "__main__":
         train_dataset=train_dataset,
         eval_dataset=dev_dataset,
         data_collator=DataCollatorForSeq2Seq(tokenizer, model=model),
-        tokenizer=AutoTokenizer.from_pretrained(args.model_name, max_length=args.max_length, truncation=True),
-        compute_metrics=compute_metrics,
+        tokenizer=tokenizer,
+        compute_metrics=partial(compute_metrics, tokenizer=tokenizer),
         callbacks=callbacks
     )
 
