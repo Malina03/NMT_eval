@@ -48,15 +48,15 @@ if __name__ == "__main__":
     )
 
     if args.eval:
-        metrics, predictions=trainer.evaluate()
-        print("\nInfo:\n", metrics, "\n")
-        logging_dir = os.path.join(args.root_dir, "logs", args.model_name, args.exp_type)
-        eval_corpus = os.path.join(logging_dir, args.eval_file.split("/")[-1].split(".")[0])
-        with open(os.path.join(logging_dir, f"${eval_corpus}_predictions.txt"), "w") as f:
-            for pred in predictions:
-                f.write(pred + "\n")
+        metrics = trainer.evaluate()
+        # print("\nInfo:\n", metrics, "\n")
+        # logging_dir = os.path.join(args.root_dir, "logs", args.model_name, args.exp_type)
+        # eval_corpus = os.path.join(logging_dir, args.eval_file.split("/")[-1].split(".")[0])
+        # with open(os.path.join(logging_dir, f"${eval_corpus}_predictions.txt"), "w") as f:
+        #     for pred in predictions:
+        #         f.write(pred + "\n")
     else:
-        metrics,_ = trainer.train()
+        metrics = trainer.train()
         print("\nInfo:\n", metrics, "\n")
 
 

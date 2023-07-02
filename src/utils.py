@@ -154,5 +154,5 @@ def compute_metrics(eval_preds, tokenizer):
     results["chrf"] = chrf.corpus_score(decode_preds, [decode_labels]).score
     results["ter"] = ter.corpus_score(decode_preds, [decode_labels]).score
 
-    return results, decode_preds
+    return results
 
