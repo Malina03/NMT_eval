@@ -119,8 +119,8 @@ def load_data(filename, args, tokenizer):
                 error_count += 1
                 continue
     print("Error count: ", error_count)
-    model_inputs = tokenizer(corpus_src, max_length=args.max_length, truncation=True)
-    encoded_tgt = tokenizer(text_target=corpus_tgt, max_length=args.max_length, truncation=True)
+    model_inputs = tokenizer(corpus_src, max_length=args.max_length, truncation=True, padding=True)
+    encoded_tgt = tokenizer(text_target=corpus_tgt, max_length=args.max_length, truncation=True, padding=True)
     return HFDataset(model_inputs, encoded_tgt["input_ids"])
             
 
@@ -135,14 +135,16 @@ def compute_metrics(eval_preds, args, tokenizer):
 
     labels[labels == -100] = tokenizer.pad_token_id
     decode_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
+    # for pred in decode_preds remove second sentence if there is one
 
-    decode_preds = [pred.strip().split(".") + "." for pred in decode_preds]
+    decode_preds = [pred.strip() for pred in decode_preds]
     decode_labels = [label.strip() for label in decode_labels]
 
-    # print("decode_preds: ")
-    # print(decode_preds[:10])
-    # print("\n \n decode_labels: ")
-    # print(decode_labels[:10])
+    print("decode_preds: ")
+    print(decode_preds[:10])
+    print("\n \n decode_labels: ")
+    print(decode_labels[:10])
+
     if args.eval:
         #write to file the predictions
         logging_dir = os.path.join(args.root_dir, "logs", args.model_name, args.exp_type)
