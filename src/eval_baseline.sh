@@ -26,9 +26,9 @@ corpus="MaCoCuV1"
 
 root_dir="/scratch/hb-macocu/NMT_eval/en-sq"
 
-corpus=("QED","TED2020","flores200.devtest","WikiMatrix")
+corpora=("QED" "TED2020" "flores200.devtest" "WikiMatrix")
 
-for eval_corpus in ${corpus[@]}; do
+for eval_corpus in ${corpora[@]}; do
     log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/baseline/eval_${eval_corpus}.log"
     python /home1/s3412768/NMT_eval/src/train.py \
         --root_dir $root_dir \
