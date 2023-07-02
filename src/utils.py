@@ -1,6 +1,7 @@
 import argparse
 from transformers import Seq2SeqTrainingArguments, AutoTokenizer
-import evaluate
+# import evaluate
+from sacrebleu.metrics import BLEU, CHRF, TER
 import os
 import pickle
 import torch
@@ -127,27 +128,29 @@ def load_data(filename, args, tokenizer):
 def compute_metrics(eval_preds, tokenizer):
     preds, labels = eval_preds
 
-    pickle.dump(preds, open("/scratch/hb-macocu/NMT_eval/en-sq/logs/preds.pkl", "wb"))
+    # pickle.dump(preds, open("/scratch/hb-macocu/NMT_eval/en-sq/logs/preds.pkl", "wb"))
 
-    print("eval_preds: ")
-    print(eval_preds)
-    print("\n   \n preds: ")
-    print(preds)
-    print("\n \n labels: ")
-    print(labels)
+    # print("eval_preds: ")
+    # print(eval_preds)
+    # print("\n   \n preds: ")
+    # print(preds)
+    # print("\n \n labels: ")
+    # print(labels)
 
 
     if isinstance(preds, tuple):
-        print("preds is tuple")
+        # print("preds is tuple")
         preds = preds[0]
-    if len(preds.shape) == 3:
-        print("preds is 3d")
-        preds = preds.argmax(axis=-1)
+    # if len(preds.shape) == 3:
+    #     print("preds is 3d")
+    #     preds = preds.argmax(axis=-1)
     pred_ids = preds.argmax(-1)
-    print("pred_ids: ")
-    print(pred_ids)
+    # print("pred_ids: ")
+    # print(pred_ids)
     decode_preds = tokenizer.batch_decode(pred_ids, use_source_tokenizer=True, skip_special_tokens=True)
-    
+    print("decode_preds: ")
+    print(decode_preds)
+
     labels[labels == -100] = tokenizer.pad_token_id
     decode_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
 
@@ -155,11 +158,11 @@ def compute_metrics(eval_preds, tokenizer):
     decode_labels = [label.strip() for label in decode_labels]
 
     results = {}
-    chrf = evaluate.load("chrf")
-    bleu = evaluate.load("bleu")
-    ter = evaluate.load("ter")
-    results["bleu"] = bleu.compute(predictions=decode_preds, references=decode_labels)
-    results["chrf"] = chrf.compute(predictions=decode_preds, references=decode_labels)
-    results["ter"] = ter.compute(predictions=decode_preds, references=decode_labels)
+    chrf = CHRF()
+    bleu = BLEU()
+    ter = TER()
+    results["bleu"] = bleu.corpus_score(predictions=decode_preds, references=decode_labels)
+    results["chrf"] = chrf.corpus_score(predictions=decode_preds, references=decode_labels)
+    results["ter"] = ter.corpus_score(predictions=decode_preds, references=decode_labels)
     return results
 
