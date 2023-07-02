@@ -136,12 +136,17 @@ def compute_metrics(eval_preds, tokenizer):
     print("\n \n labels: ")
     print(labels)
 
-    
 
     if isinstance(preds, tuple):
+        print("preds is tuple")
         preds = preds[0]
-    # preds_ids = preds.predictions.argmax(-1)
-    decode_preds = tokenizer.batch_decode(preds, use_source_tokenizer=True, skip_special_tokens=True)
+    if len(preds.shape) == 3:
+        print("preds is 3d")
+        preds = preds.argmax(axis=-1)
+    pred_ids = preds.predictions.argmax(-1)
+    print("pred_ids: ")
+    print(pred_ids)
+    decode_preds = tokenizer.batch_decode(pred_ids, use_source_tokenizer=True, skip_special_tokens=True)
     
     labels[labels == -100] = tokenizer.pad_token_id
     decode_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
