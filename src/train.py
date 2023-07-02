@@ -42,7 +42,7 @@ if __name__ == "__main__":
         eval_dataset=dev_dataset,
         data_collator=DataCollatorForSeq2Seq(tokenizer, model=model),
         tokenizer=tokenizer,
-        compute_metrics=partial(compute_metrics, tokenizer=tokenizer),
+        compute_metrics=partial(compute_metrics, args, tokenizer=tokenizer),
         callbacks=callbacks
     )
 

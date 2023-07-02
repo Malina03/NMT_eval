@@ -124,28 +124,13 @@ def load_data(filename, args, tokenizer):
     return HFDataset(model_inputs, encoded_tgt["input_ids"])
             
 
-def compute_metrics(eval_preds, tokenizer):
+def compute_metrics(eval_preds, args, tokenizer):
     preds, labels = eval_preds
 
-    # pickle.dump(preds, open("/scratch/hb-macocu/NMT_eval/en-sq/logs/preds.pkl", "wb"))
-
-    # print("eval_preds: ")
-    # print(eval_preds)
-    # print("\n   \n preds: ")
-    # print(preds)
-    # print("\n \n labels: ")
-    # print(labels)
-
-
     if isinstance(preds, tuple):
-        # print("preds is tuple")
         preds = preds[0]
-    # if len(preds.shape) == 3:
-    #     print("preds is 3d")
-    #     preds = preds.argmax(axis=-1)
     pred_ids = preds.argmax(-1)
-    # print("pred_ids: ")
-    # print(pred_ids)
+
     decode_preds = tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
 
     labels[labels == -100] = tokenizer.pad_token_id
@@ -154,10 +139,17 @@ def compute_metrics(eval_preds, tokenizer):
     decode_preds = [pred.strip().split(".") + "." for pred in decode_preds]
     decode_labels = [label.strip() for label in decode_labels]
 
-    print("decode_preds: ")
-    print(decode_preds[:10])
-    print("\n \n decode_labels: ")
-    print(decode_labels[:10])
+    # print("decode_preds: ")
+    # print(decode_preds[:10])
+    # print("\n \n decode_labels: ")
+    # print(decode_labels[:10])
+    if args.eval:
+        #write to file the predictions
+        logging_dir = os.path.join(args.root_dir, "logs", args.model_name, args.exp_type)
+        eval_corpus = os.path.join(logging_dir, args.eval_file.split("/")[-1].split(".")[0])
+        with open(os.path.join(logging_dir, f"${eval_corpus}_predictions.txt"), "w") as f:
+            for pred in decode_preds:
+                f.write(pred + "\n")
 
     results = {}
     chrf = CHRF()
