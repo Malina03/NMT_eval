@@ -146,7 +146,7 @@ def compute_metrics(eval_preds, tokenizer):
     pred_ids = preds.argmax(-1)
     # print("pred_ids: ")
     # print(pred_ids)
-    decode_preds = tokenizer.batch_decode(pred_ids, use_source_tokenizer=True, skip_special_tokens=True)
+    decode_preds = tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
 
     labels[labels == -100] = tokenizer.pad_token_id
     decode_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
@@ -163,8 +163,9 @@ def compute_metrics(eval_preds, tokenizer):
     chrf = CHRF()
     bleu = BLEU()
     ter = TER()
-    results["bleu"] = bleu.corpus_score(decode_preds, decode_labels)
-    results["chrf"] = chrf.corpus_score(decode_preds, decode_labels)
-    results["ter"] = ter.corpus_score(decode_preds, decode_labels)
+    
+    results["bleu"] = bleu.corpus_score(decode_preds, decode_labels).score
+    results["chrf"] = chrf.corpus_score(decode_preds, decode_labels).score
+    results["ter"] = ter.corpus_score(decode_preds, decode_labels).score
     return results
 
