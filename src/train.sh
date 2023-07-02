@@ -1,7 +1,7 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
 #SBATCH --time=2:00:00
-#SBATCH --job-name=test_MaCoCuV1
+#SBATCH --job-name=MacoCuV1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:a100:1
 #SBATCH --mem=50G
