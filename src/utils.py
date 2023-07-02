@@ -3,7 +3,6 @@ from transformers import Seq2SeqTrainingArguments, AutoTokenizer
 # import evaluate
 from sacrebleu.metrics import BLEU, CHRF, TER
 import os
-import pickle
 import torch
 
 
@@ -148,8 +147,6 @@ def compute_metrics(eval_preds, tokenizer):
     # print("pred_ids: ")
     # print(pred_ids)
     decode_preds = tokenizer.batch_decode(pred_ids, use_source_tokenizer=True, skip_special_tokens=True)
-    print("decode_preds: ")
-    print(decode_preds)
 
     labels[labels == -100] = tokenizer.pad_token_id
     decode_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
@@ -157,12 +154,17 @@ def compute_metrics(eval_preds, tokenizer):
     decode_preds = [pred.strip() for pred in decode_preds]
     decode_labels = [label.strip() for label in decode_labels]
 
+    print("decode_preds: ")
+    print(decode_preds)
+    print("\n \n decode_labels: ")
+    print(decode_labels)
+
     results = {}
     chrf = CHRF()
     bleu = BLEU()
     ter = TER()
-    results["bleu"] = bleu.corpus_score(predictions=decode_preds, references=decode_labels)
-    results["chrf"] = chrf.corpus_score(predictions=decode_preds, references=decode_labels)
-    results["ter"] = ter.corpus_score(predictions=decode_preds, references=decode_labels)
+    results["bleu"] = bleu.corpus_score(decode_preds, decode_labels)
+    results["chrf"] = chrf.corpus_score(decode_preds, decode_labels)
+    results["ter"] = ter.corpus_score(decode_preds, decode_labels)
     return results
 
