@@ -2,6 +2,7 @@ import argparse
 from transformers import Seq2SeqTrainingArguments, AutoTokenizer
 import evaluate
 import os
+import pickle
 import torch
 
 
@@ -125,13 +126,17 @@ def load_data(filename, args, tokenizer):
 
 def compute_metrics(eval_preds, tokenizer):
     preds, labels = eval_preds
-    
+
+    pickle.dump(preds, open("/scratch/hb-macocu/NMT_eval/en-sq/logs/preds.pkl", "wb"))
+
     print("eval_preds: ")
     print(eval_preds)
     print("\n   \n preds: ")
     print(preds)
     print("\n \n labels: ")
     print(labels)
+
+    
 
     if isinstance(preds, tuple):
         preds = preds[0]
