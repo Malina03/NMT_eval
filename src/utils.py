@@ -151,13 +151,13 @@ def compute_metrics(eval_preds, tokenizer):
     labels[labels == -100] = tokenizer.pad_token_id
     decode_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
 
-    decode_preds = [pred.strip() for pred in decode_preds]
+    decode_preds = [pred.strip().split(".") + "." for pred in decode_preds]
     decode_labels = [label.strip() for label in decode_labels]
 
     print("decode_preds: ")
-    print(decode_preds)
+    print(decode_preds[:25])
     print("\n \n decode_labels: ")
-    print(decode_labels)
+    print(decode_labels[:25])
 
     results = {}
     chrf = CHRF()
