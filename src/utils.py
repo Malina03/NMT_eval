@@ -13,6 +13,7 @@ def get_args():
     # parser.add_argument("-model_save_dir", "--model_save_dir", required=True, type=str, help="Path to the output directory where the model will be saved.")
     parser.add_argument("-checkpoint", "--checkpoint", required=False, type=str, help="Path to the checkpoint to fine-tune. If not provided, the model will be initialized from scratch.")
     parser.add_argument("-eval", "--eval", required=False, action="store_true", help="Whether to only evaluate the model.")
+    parser.add_argument("-predict", "--predict", required=False, action="store_true", help="Whether to only predict with the model.")
     parser.add_argument("-exp_type", "--exp_type", required=False, type=str, default="fine_tuning", help="Type of experiment. Can be 'fine_tuning' or 'from_scratch'.")
     parser.add_argument("-wandb", "--wandb", required=False, action="store_true", help="Whether to log the training process on wandb.")
 
