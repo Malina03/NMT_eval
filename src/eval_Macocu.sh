@@ -45,6 +45,7 @@ for eval_corpus in ${corpora[@]}; do
         --fp16 \
         --exp_type fine_tune \
         --model_name $model \
-        --eval
+        --eval \
+        --predict
         &> $log_file 
 done
