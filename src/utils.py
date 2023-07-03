@@ -123,7 +123,7 @@ def load_data(filename, args, tokenizer):
     print("Error count: ", error_count)
     model_inputs = tokenizer(corpus_src, max_length=args.max_length, truncation=True)
     encoded_tgt = tokenizer(text_target=corpus_tgt, max_length=args.max_length, truncation=True)
-    print("model_inputs: ", model_inputs[0][:10])
+    print("model_inputs: ", model_inputs)
     return HFDataset(model_inputs, encoded_tgt["input_ids"])
             
 
