@@ -131,6 +131,9 @@ def compute_metrics(eval_preds, tokenizer):
 
     if isinstance(preds, tuple):
         preds = preds[0]
+        
+    print("preds: ")
+    print(preds[:10])
     # pred_ids = preds.argmax(-1)
     # decode_preds = tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
     decode_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
