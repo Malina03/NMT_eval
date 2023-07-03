@@ -137,7 +137,7 @@ def compute_metrics(eval_preds, tokenizer):
     print(preds[:10])
     # pred_ids = preds.argmax(-1)
     # decode_preds = tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
-    preds= np.where(preds != 59157, preds, tokenizer.pad_token_id)
+    # preds= np.where(preds != 59157, preds, tokenizer.pad_token_id)
     decode_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
 
     # labels[labels == -100] = tokenizer.pad_token_id
