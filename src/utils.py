@@ -1,6 +1,6 @@
 import argparse
 from transformers import Seq2SeqTrainingArguments, AutoTokenizer
-# import evaluate
+import numpy as np
 from sacrebleu.metrics import BLEU, CHRF, TER
 import os
 import torch
@@ -102,6 +102,7 @@ def get_train_args(args):
         gradient_checkpointing=args.gradient_checkpointing,
         adafactor=args.adafactor,
         report_to="wandb" if args.wandb else "none",
+        predict_with_generate=True,
     )
     return train_args
 
@@ -130,21 +131,23 @@ def compute_metrics(eval_preds, tokenizer):
 
     if isinstance(preds, tuple):
         preds = preds[0]
-    pred_ids = preds.argmax(-1)
+    # pred_ids = preds.argmax(-1)
+    # decode_preds = tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
+    decode_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
 
-    decode_preds = tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
-
-    labels[labels == -100] = tokenizer.pad_token_id
+    # labels[labels == -100] = tokenizer.pad_token_id
+    labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
     decode_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
     # for pred in decode_preds remove second sentence if there is one
 
-    decode_preds = ['.'.join([pred.strip().split('.')[0],'']) for pred in decode_preds]
+    # decode_preds = ['.'.join([pred.strip().split('.')[0],'']) for pred in decode_preds]
+    decode_preds = [decode_preds.strip() for label in decode_labels]
     decode_labels = [label.strip() for label in decode_labels]
 
-    # print("decode_preds: ")
-    # print(decode_preds[:10])
-    # print("\n \n decode_labels: ")
-    # print(decode_labels[:10])
+    print("decode_preds: ")
+    print(decode_preds[:10])
+    print("\n \n decode_labels: ")
+    print(decode_labels[:10])
 
     results = {}
     chrf = CHRF()

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=2:00:00
+#SBATCH --time=0:30:00
 #SBATCH --job-name=MacoCuV1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:a100:1
@@ -11,10 +11,9 @@
 export PATH="$PATH:/home1/s3412768/.local/bin"
 
 # Load modules
-# module load Python/3.9.6-GCCcore-11.2.0
 module purge
 module load PyTorch/1.12.1-foss-2022a-CUDA-11.7.0
-# module load TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
+
 
 export PYTORCH_CUDA_ALLOC_CONF=garbage_collection_threshold:0.6,max_split_size_mb:128
 export CUDA_VISIBLE_DEVICES=0 
@@ -37,7 +36,7 @@ python /home1/s3412768/NMT_eval/src/train.py \
     --gradient_checkpointing \
     --adafactor \
     --fp16 \
-    --evaluation_steps 5000 \
+    --evaluation_steps 1000 \
     --save_strategy steps \
     --evaluation_strategy steps \
     --exp_type fine_tuning2 \
