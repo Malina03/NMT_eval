@@ -20,6 +20,8 @@ if __name__ == "__main__":
     tokenizer = AutoTokenizer.from_pretrained(args.model_name, max_length=args.max_length, truncation=True)
     train_dataset = load_data(args.train_file, args, tokenizer=tokenizer)
     dev_dataset= load_data(args.dev_file, args, tokenizer=tokenizer)
+    if args.eval:
+        test_dataset = load_data(args.test_file, args, tokenizer=tokenizer)
 
     # Load the model
     if args.checkpoint is None:
@@ -48,13 +50,21 @@ if __name__ == "__main__":
     )
 
     if args.eval:
-        metrics = trainer.evaluate()
-        # print("\nInfo:\n", metrics, "\n")
-        # logging_dir = os.path.join(args.root_dir, "logs", args.model_name, args.exp_type)
-        # eval_corpus = os.path.join(logging_dir, args.eval_file.split("/")[-1].split(".")[0])
-        # with open(os.path.join(logging_dir, f"${eval_corpus}_predictions.txt"), "w") as f:
-        #     for pred in predictions:
-        #         f.write(pred + "\n")
+        if args.predict:
+            predictions = trainer.predict(test_dataset=test_dataset).predictions
+            pred_ids= predictions.argmax(-1)
+            decode_preds = tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
+            predictions = [pred.strip() for pred in decode_preds]
+            logging_dir = os.path.join(args.root_dir, "logs", args.model_name, args.exp_type)
+            eval_corpus = os.path.join(logging_dir, args.eval_file.split("/")[-1].split(".")[0])
+            with open(os.path.join(logging_dir, f"${eval_corpus}_predictions.txt"), "w") as f:
+                for pred in predictions:
+                    f.write(pred + "\n")
+            print("\nInfo:\n", predictions.metrics, "\n")
+     
+        else:
+            metrics = trainer.evaluate()
+
     else:
         metrics = trainer.train()
         print("\nInfo:\n", metrics, "\n")
