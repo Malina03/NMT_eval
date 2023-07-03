@@ -32,13 +32,13 @@ python /home1/s3412768/NMT_eval/src/train.py \
     --train_file "$root_dir/data/${corpus}.en-sq.tsv.dedup" \
     --dev_file $root_dir/data/flores200.dev.en-sq.tsv.dedup \
     --wandb \
-    --gradient_accumulation_steps 2 \
+    --gradient_accumulation_steps 4 \
     --batch_size 8 \
     --gradient_checkpointing \
     --adafactor \
     --fp16 \
-    --save_strategy steps \
-    --evaluation_strategy steps \
+    --save_strategy epoch\
+    --evaluation_strategy epoch \
     --exp_type fine_tuning \
     --model_name Helsinki-NLP/opus-mt-en-sq \
     &> $log_file 

@@ -132,26 +132,13 @@ def compute_metrics(eval_preds, tokenizer):
     if isinstance(preds, tuple):
         preds = preds[0]
 
-    print("preds: ")
-    print(preds[:5])
-    # pred_ids = preds.argmax(-1)
-    # decode_preds = tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
-    # preds= np.where(preds != 59157, preds, tokenizer.pad_token_id)
     decode_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
 
-    # labels[labels == -100] = tokenizer.pad_token_id
     labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
     decode_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
-    # for pred in decode_preds remove second sentence if there is one
 
-    # decode_preds = ['.'.join([pred.strip().split('.')[0],'']) for pred in decode_preds]
     decode_preds = [preds.strip() for preds in decode_preds]
     decode_labels = [label.strip() for label in decode_labels]
-
-    print("decode_preds: ")
-    print(decode_preds[:5])
-    print("\n \n decode_labels: ")
-    print(decode_labels[:5])
 
     results = {}
     chrf = CHRF()

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=0:30:00
+#SBATCH --time=24:00:00
 #SBATCH --job-name=MacoCuV1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:a100:1
@@ -24,21 +24,20 @@ source /home1/s3412768/.envs/nmt2/bin/activate
 corpus="MaCoCuV1"
 
 root_dir="/scratch/hb-macocu/NMT_eval/en-sq"
-log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/fine_tune2/train_${corpus}.log"
+log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/fine_tune/train_${corpus}.log"
 
 python /home1/s3412768/NMT_eval/src/train.py \
     --root_dir $root_dir \
     --train_file "$root_dir/data/${corpus}.en-sq.tsv.dedup" \
     --dev_file $root_dir/data/flores200.dev.en-sq.tsv.dedup \
     --wandb \
-    --gradient_accumulation_steps 2 \
+    --gradient_accumulation_steps 4 \
     --batch_size 8 \
     --gradient_checkpointing \
     --adafactor \
     --fp16 \
-    --evaluation_steps 1000 \
-    --save_strategy steps \
-    --evaluation_strategy steps \
-    --exp_type fine_tuning2 \
+    --save_strategy epoch \
+    --evaluation_strategy epoch \
+    --exp_type fine_tuning \
     --model_name Helsinki-NLP/opus-mt-en-sq \
     &> $log_file 
