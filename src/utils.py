@@ -123,6 +123,7 @@ def load_data(filename, args, tokenizer):
     print("Error count: ", error_count)
     model_inputs = tokenizer(corpus_src, max_length=args.max_length, truncation=True)
     encoded_tgt = tokenizer(text_target=corpus_tgt, max_length=args.max_length, truncation=True)
+    print("model_inputs: ", model_inputs[0][:10])
     return HFDataset(model_inputs, encoded_tgt["input_ids"])
             
 
@@ -131,11 +132,12 @@ def compute_metrics(eval_preds, tokenizer):
 
     if isinstance(preds, tuple):
         preds = preds[0]
-        
+
     print("preds: ")
     print(preds[:10])
     # pred_ids = preds.argmax(-1)
     # decode_preds = tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
+    preds= np.where(preds != 59157, preds, tokenizer.pad_token_id)
     decode_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
 
     # labels[labels == -100] = tokenizer.pad_token_id
@@ -144,7 +146,7 @@ def compute_metrics(eval_preds, tokenizer):
     # for pred in decode_preds remove second sentence if there is one
 
     # decode_preds = ['.'.join([pred.strip().split('.')[0],'']) for pred in decode_preds]
-    decode_preds = [decode_preds.strip() for label in decode_labels]
+    decode_preds = [preds.strip() for pred in decode_preds]
     decode_labels = [label.strip() for label in decode_labels]
 
     print("decode_preds: ")
