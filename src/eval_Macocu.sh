@@ -31,7 +31,7 @@ corpora=("flores200.devtest")
 checkpoint="${root_dir}/models/${model}/fine_tuning/${corpus}/checkpoint-*?"
 
 for eval_corpus in ${corpora[@]}; do
-    log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/fine_tuning/${corpus}/eval_${eval_corpus}.log"
+    log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/fine_tune/${corpus}/eval_${eval_corpus}.log"
     python /home1/s3412768/NMT_eval/src/train.py \
         --root_dir $root_dir \
         --checkpoint $checkpoint \
@@ -43,7 +43,7 @@ for eval_corpus in ${corpora[@]}; do
         --gradient_checkpointing \
         --adafactor \
         --fp16 \
-        --exp_type fine_tuning \
+        --exp_type fine_tune \
         --model_name $model \
         --eval
         &> $log_file 
