@@ -145,8 +145,11 @@ def compute_metrics(eval_preds, tokenizer):
     decode_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
     # for pred in decode_preds remove second sentence if there is one
 
+    print("decode preds before strip: ")
+    print(decode_preds[:10])
+
     # decode_preds = ['.'.join([pred.strip().split('.')[0],'']) for pred in decode_preds]
-    decode_preds = [preds.strip() for pred in decode_preds]
+    decode_preds = [preds.strip() for preds in decode_preds]
     decode_labels = [label.strip() for label in decode_labels]
 
     print("decode_preds: ")
