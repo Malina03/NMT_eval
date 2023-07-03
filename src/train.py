@@ -56,7 +56,9 @@ if __name__ == "__main__":
             decode_preds = tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
             predictions = [pred.strip() for pred in decode_preds]
             logging_dir = os.path.join(args.root_dir, "logs", args.model_name, args.exp_type)
-            eval_corpus = os.path.join(logging_dir, args.eval_file.split("/")[-1].split(".")[0])
+            if not os.path.exists(logging_dir):
+                os.makedirs(logging_dir)
+            eval_corpus = args.eval_file.split("/")[-1].split(".")[0]
             with open(os.path.join(logging_dir, f"${eval_corpus}_predictions.txt"), "w") as f:
                 for pred in predictions:
                     f.write(pred + "\n")
