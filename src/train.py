@@ -67,8 +67,13 @@ if __name__ == "__main__":
      
         else:
             metrics = trainer.evaluate()
+            print("\nInfo:\n", metrics, "\n")
 
     else:
+        ## evaluate the baseline model before training
+        if args.eval_baseline:
+            metrics = trainer.evaluate()
+            print("\nInfo:\n", metrics, "\n")
         metrics = trainer.train()
         print("\nInfo:\n", metrics, "\n")
 

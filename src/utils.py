@@ -16,6 +16,7 @@ def get_args():
     parser.add_argument("-predict", "--predict", required=False, action="store_true", help="Whether to only predict with the model.")
     parser.add_argument("-exp_type", "--exp_type", required=False, type=str, default="fine_tuning", help="Type of experiment. Can be 'fine_tuning' or 'from_scratch'.")
     parser.add_argument("-wandb", "--wandb", required=False, action="store_true", help="Whether to log the training process on wandb.")
+    parser.add_argument("-eval_baseline", "--eval_baseline", required=False, action="store_true", help="Whether to evaluate the baseline model before fine-tuning.")
 
     parser.add_argument("-train_file", "--train_file", required=True, type=str, help="Path to the training file.")
     parser.add_argument("-dev_file", "--dev_file", required=True, type=str, help="Path to the development data  file.")

@@ -37,7 +37,8 @@ python /home1/s3412768/NMT_eval/src/train.py \
     --adafactor \
     --save_strategy epoch \
     --evaluation_strategy epoch \
-    --exp_type ft1 \
+    --learning_rate 1e-5 \
+    --exp_type ft2 \
     --model_name Helsinki-NLP/opus-mt-en-sq \
     --early_stopping 2 \
     --eval_baseline \
