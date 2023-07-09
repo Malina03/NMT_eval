@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=24:00:00
+#SBATCH --time=36:00:00
 #SBATCH --job-name=ccA
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:a100:1
@@ -32,13 +32,15 @@ python /home1/s3412768/NMT_eval/src/train.py \
     --train_file "$root_dir/data/${corpus}.en-sq.tsv.dedup" \
     --dev_file $root_dir/data/flores200.dev.en-sq.tsv.dedup \
     --wandb \
-    --gradient_accumulation_steps 4 \
-    --batch_size 8 \
+    --gradient_accumulation_steps 2 \
+    --batch_size 16 \
     --gradient_checkpointing \
     --adafactor \
-    --fp16 \
-    --save_strategy epoch\
+    --save_strategy epoch \
     --evaluation_strategy epoch \
-    --exp_type fine_tuning \
+    --learning_rate 1e-5 \
+    --exp_type fine_tune\
     --model_name Helsinki-NLP/opus-mt-en-sq \
-    &> $log_file 
+    --early_stopping 2 \
+    --eval_baseline \
+    &> $log_file
