@@ -56,7 +56,7 @@ if __name__ == "__main__":
             preds = output.predictions
             if isinstance(preds, tuple):
                 preds = preds[0]
-            decode_preds = tokenizer.batch_decode(output.preds, skip_special_tokens=True)
+            decode_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
             predictions = [pred.strip() for pred in decode_preds]
             logging_dir = os.path.join(args.root_dir, "logs", args.exp_type)
             if not os.path.exists(logging_dir):
