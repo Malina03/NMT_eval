@@ -52,20 +52,22 @@ if __name__ == "__main__":
 
     if args.eval:
         if args.predict:
-            predictions = trainer.predict(test_dataset=test_dataset).predictions
-            pred_ids= predictions.argmax(-1)
-            decode_preds = tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
+            output = trainer.predict(test_dataset=test_dataset)
+            preds = output.predictions
+            if isinstance(preds, tuple):
+                preds = preds[0]
+            decode_preds = tokenizer.batch_decode(output.preds, skip_special_tokens=True)
             predictions = [pred.strip() for pred in decode_preds]
             logging_dir = os.path.join(args.root_dir, "logs", args.exp_type)
             if not os.path.exists(logging_dir):
                 os.makedirs(logging_dir)
             eval_corpus = args.test_file.split("/")[-1].split(".")[0]
-            with open(os.path.join(logging_dir, f"${eval_corpus}_predictions.txt"), "w") as f:
-                f.write("Metrics:\n", predictions.metrics, "\n")
+            with open(os.path.join(logging_dir, f'{eval_corpus}_predictions.txt'), "w") as f:
+                f.write("Metrics:\n", output.metrics, "\n")
                 f.write("Predictions:\n")
                 for pred in predictions:
                     f.write(pred + "\n")
-            print("\nInfo:\n", predictions.metrics, "\n")
+            print("\nInfo:\n", output.metrics, "\n")
      
         else:
             metrics = trainer.evaluate()
