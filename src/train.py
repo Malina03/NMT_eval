@@ -56,11 +56,13 @@ if __name__ == "__main__":
             pred_ids= predictions.argmax(-1)
             decode_preds = tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
             predictions = [pred.strip() for pred in decode_preds]
-            logging_dir = os.path.join(args.root_dir, "logs", args.model_name, args.exp_type)
+            logging_dir = os.path.join(args.root_dir, "logs", args.exp_type)
             if not os.path.exists(logging_dir):
                 os.makedirs(logging_dir)
             eval_corpus = args.eval_file.split("/")[-1].split(".")[0]
             with open(os.path.join(logging_dir, f"${eval_corpus}_predictions.txt"), "w") as f:
+                f.write("Metrics:\n", predictions.metrics, "\n")
+                f.write("Predictions:\n")
                 for pred in predictions:
                     f.write(pred + "\n")
             print("\nInfo:\n", predictions.metrics, "\n")
@@ -73,7 +75,7 @@ if __name__ == "__main__":
         ## evaluate the baseline model before training
         if args.eval_baseline:
             metrics = trainer.evaluate()
-            print("\nInfo:\n", metrics, "\n")
+            print("\nBaseline metrics:\n", metrics, "\n")
         metrics = trainer.train()
         print("\nInfo:\n", metrics, "\n")
 

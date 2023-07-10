@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=1:00:00
+#SBATCH --time=2:00:00
 #SBATCH --job-name=eval_MaCoCu
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:a100:1
@@ -26,26 +26,31 @@ corpus="MaCoCuV1"
 
 root_dir="/scratch/hb-macocu/NMT_eval/en-sq"
 model="Helsinki-NLP/opus-mt-en-sq"
-# corpora=("QED" "TED2020" "flores200.devtest" "WikiMatrix")
-corpora=("flores200.devtest")
-checkpoint="${root_dir}/models/${model}/fine_tuning/${corpus}/checkpoint-*?"
+corpora=("QED" "TED2020" "flores200.devtest" "WikiMatrix")
+# corpora=("flores200.devtest")
+checkpoint="${root_dir}/models/${model}/ft2/${corpus}/checkpoint-*?"
 
 for eval_corpus in ${corpora[@]}; do
-    log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/fine_tune/${corpus}/eval_${eval_corpus}.log"
+    log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/eval/${corpus}/eval_${eval_corpus}.log"
+    if [ $eval_corpus = 'flores.devtest' ]; then 
+        test_file="${root_dir}/data/${eval_corpus}.tsv"
+    else
+        test_file="${root_dir}/data/${eval_corpus}.en-sq.tsv.dedup.test"
+    fi
+    
     python /home1/s3412768/NMT_eval/src/train.py \
         --root_dir $root_dir \
         --checkpoint $checkpoint \
         --train_file $root_dir/data/$corpus.en-sq.tsv.dedup \
         --dev_file $root_dir/data/flores200.dev.en-sq.tsv.dedup \
-        --test_file $root_dir/data/$eval_corpus.en-sq.tsv.dedup.test \
+        --test_file $test_file \
         --gradient_accumulation_steps 2 \
-        --batch_size 8 \
+        --batch_size 16 \
         --gradient_checkpointing \
         --adafactor \
-        --fp16 \
-        --exp_type fine_tune \
+        --exp_type "eval/${corpus}" \
         --model_name $model \
         --eval \
-        --predict
+        --predict \
         &> $log_file 
 done
