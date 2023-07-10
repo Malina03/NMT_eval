@@ -63,7 +63,6 @@ if __name__ == "__main__":
                 os.makedirs(logging_dir)
             eval_corpus = args.test_file.split("/")[-1].split(".")[0]
             with open(os.path.join(logging_dir, f'{eval_corpus}_predictions.txt'), "w") as f:
-                f.write("Metrics:\n", output.metrics, "\n")
                 f.write("Predictions:\n")
                 for pred in predictions:
                     f.write(pred + "\n")
