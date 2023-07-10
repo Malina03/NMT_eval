@@ -59,7 +59,7 @@ if __name__ == "__main__":
             logging_dir = os.path.join(args.root_dir, "logs", args.exp_type)
             if not os.path.exists(logging_dir):
                 os.makedirs(logging_dir)
-            eval_corpus = args.eval_file.split("/")[-1].split(".")[0]
+            eval_corpus = args.test_file.split("/")[-1].split(".")[0]
             with open(os.path.join(logging_dir, f"${eval_corpus}_predictions.txt"), "w") as f:
                 f.write("Metrics:\n", predictions.metrics, "\n")
                 f.write("Predictions:\n")
