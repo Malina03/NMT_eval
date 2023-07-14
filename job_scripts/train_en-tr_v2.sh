@@ -1,7 +1,7 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
 #SBATCH --time=12:00:00
-#SBATCH --job-name=bs-v2
+#SBATCH --job-name=tr-v2
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:a100:1
 #SBATCH --mem=50G
