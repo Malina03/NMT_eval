@@ -1,7 +1,7 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
 #SBATCH --time=12:00:00
-#SBATCH --job-name=MacoCuV1
+#SBATCH --job-name=hr-v2
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:a100:1
 #SBATCH --mem=50G
@@ -21,15 +21,22 @@ export CUDA_VISIBLE_DEVICES=0
 #load environment
 source /home1/s3412768/.envs/nmt2/bin/activate
 
-corpus="MaCoCuV1"
+corpus="MaCoCuV2"
+language="hr"
+model="Helsinki-NLP/opus-mt-tc-base-en-sh"
 
-root_dir="/scratch/hb-macocu/NMT_eval/en-sq"
-# log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/fine_tune/train_${corpus}.log"
+
+root_dir="/scratch/hb-macocu/NMT_eval/en-${language}"
+log_file="/scratch/hb-macocu/NMT_eval/en-${language}/logs/fine_tune/train_${corpus}.log"
+# if log directory does not exist, create it
+if [ ! -d "$root_dir/logs/fine_tune" ]; then
+    mkdir $root_dir/logs/fine_tune
+fi
 
 python /home1/s3412768/NMT_eval/src/train.py \
     --root_dir $root_dir \
-    --train_file "$root_dir/data/${corpus}.en-sq.tsv.dedup" \
-    --dev_file $root_dir/data/flores200.dev.en-sq.tsv.dedup \
+    --train_file $root_dir/data/$corpus.en-$language.dedup.norm.tsv.tag \
+    --dev_file $root_dir/data/flores_dev.en-$language.tsv.tag \
     --wandb \
     --gradient_accumulation_steps 2 \
     --batch_size 16 \
@@ -38,7 +45,8 @@ python /home1/s3412768/NMT_eval/src/train.py \
     --save_strategy epoch \
     --evaluation_strategy epoch \
     --learning_rate 1e-5 \
-    --exp_type ft2 \
-    --model_name Helsinki-NLP/opus-mt-en-sq \
+    --exp_type fine_tune \
+    --model_name $model \
     --early_stopping 2 \
     --eval_baseline \
+    &> $log_file
