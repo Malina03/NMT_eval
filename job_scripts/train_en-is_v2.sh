@@ -30,7 +30,7 @@ root_dir="/scratch/hb-macocu/NMT_eval/en-${language}"
 log_file="/scratch/hb-macocu/NMT_eval/en-${language}/logs/fine_tune/train_${corpus}.log"
 # if log directory does not exist, create it
 if [ ! -d "$root_dir/logs/fine_tune" ]; then
-    mkdir $root_dir/logs/fine_tune
+    mkdir -p $root_dir/logs/fine_tune
 fi
 
 python /home1/s3412768/NMT_eval/src/train.py \
