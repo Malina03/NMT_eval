@@ -3,6 +3,7 @@
 #SBATCH --time=2:00:00
 #SBATCH --job-name=test-bs-v2
 #SBATCH --partition=gpu
+#SBATCH --gpus-per-node=1
 #SBATCH --mem=50G
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=m.chichirau@student.rug.nl
