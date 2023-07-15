@@ -140,6 +140,9 @@ def load_data(filename, args, tokenizer):
     np.random.shuffle(indices)
     corpus_src = np.array(corpus_src)[indices]
     corpus_tgt = np.array(corpus_tgt)[indices]
+    # make data lists again
+    corpus_src = corpus_src.tolist()
+    corpus_tgt = corpus_tgt.tolist()
     # tokenize the data
     model_inputs = tokenizer(corpus_src, max_length=args.max_length, truncation=True)
     encoded_tgt = tokenizer(text_target=corpus_tgt, max_length=args.max_length, truncation=True)
