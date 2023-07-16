@@ -1,10 +1,10 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=48:00:00
-#SBATCH --job-name=sr-v2
+#SBATCH --time=72:00:00
+#SBATCH --job-name=hbs-v2
 #SBATCH --partition=gpu
 #SBATCH --gpus-per-node=1
-#SBATCH --mem=20G
+#SBATCH --mem=50G
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=m.chichirau@student.rug.nl
 
@@ -22,7 +22,7 @@ export CUDA_VISIBLE_DEVICES=0
 source /home1/s3412768/.envs/nmt2/bin/activate
 
 corpus="MaCoCuV2"
-language="sr"
+language="hbs"
 model="Helsinki-NLP/opus-mt-tc-base-en-sh"
 
 
@@ -35,8 +35,7 @@ fi
 
 python /home1/s3412768/NMT_eval/src/train.py \
     --root_dir $root_dir \
-    --train_file $root_dir/data/$corpus.en-$language.cyrillic.dedup.norm.tsv.tag \
-    --train_file_2 $root_dir/data/$corpus.en-$language.latin.dedup.norm.tsv.tag \
+    --train_file $root_dir/data/$corpus.en-$language.dedup.norm.tsv.tag \
     --dev_file $root_dir/data/flores_dev.en-$language.tsv.tag \
     --wandb \
     --gradient_accumulation_steps 2 \
