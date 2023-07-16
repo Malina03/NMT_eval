@@ -44,7 +44,7 @@ def get_args():
     parser.add_argument("-evaluation_steps", "--evaluation_steps", required=False, type=int, default=10000, help="Evaluation steps.")
     parser.add_argument("-save_total_limit", "--save_total_limit", required=False, type=int, default=1, help="Maximum number of checkpoints to save.")
     parser.add_argument("-save_steps", "--save_steps", required=False, type=int, default=10000, help="Save checkpoint every X updates steps.")
-    parser.add_argument("-early_stopping", "--early_stopping", required=False, type=int, default=1, help="Early stopping patience.")
+    parser.add_argument("-early_stopping", "--early_stopping", required=False, type=int, default=2, help="Early stopping patience.")
     parser.add_argument("-label_smoothing", "--label_smoothing", required=False, type=float, default=0.1, help="Label smoothing.")
     parser.add_argument("-fp16", "--fp16", required=False, action="store_true", help="Whether to use fp16.")
     parser.add_argument("-adafactor", "--adafactor", required=False, action="store_true", help="Whether to use AdaFactor.")
