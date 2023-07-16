@@ -4,7 +4,7 @@
 #SBATCH --job-name=tr-v2
 #SBATCH --partition=gpu
 #SBATCH --gpus-per-node=1
-#SBATCH --mem=20G
+#SBATCH --mem=50G
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=m.chichirau@student.rug.nl
 
