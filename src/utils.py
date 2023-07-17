@@ -75,6 +75,9 @@ def get_train_args(args):
         logging_dir = os.path.join(args.root_dir, "logs", args.exp_type, args.train_file.split("/")[-1].split(".")[0])
         if not os.path.exists(logging_dir):
             os.makedirs(logging_dir)
+    else:
+        model_save_dir = None
+        logging_dir = None
     train_args = Seq2SeqTrainingArguments(
         output_dir=model_save_dir,
         logging_dir=logging_dir,
