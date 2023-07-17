@@ -19,7 +19,7 @@ if __name__ == "__main__":
     # Load the data
     tokenizer = AutoTokenizer.from_pretrained(args.model_name, max_length=args.max_length, truncation=True)
 
-    if args.eval:
+    if args.eval or args.predict:
         test_dataset = load_data(args.test_file, args, tokenizer=tokenizer)
         train_dataset = None
         dev_dataset = None
