@@ -66,7 +66,8 @@ for language in "${languages[@]}"; do
         --adafactor \
         --exp_type eval/baseline \
         --model_name $model \
-        --eval \
         --predict \
         &> $log_file 
+    
+
 done

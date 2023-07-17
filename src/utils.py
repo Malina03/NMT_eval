@@ -1,10 +1,9 @@
 import argparse
 from transformers import Seq2SeqTrainingArguments
 import numpy as np
-from sacrebleu.metrics import BLEU, CHRF, TER, COMET
+from sacrebleu.metrics import BLEU, CHRF, TER
 import os
 import torch
-
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -134,8 +133,8 @@ def load_data(filename, args, tokenizer):
                     continue
     if error_count > 0:
         print("Errors when loading data: ", error_count)
-    # shuffle the data, unless evaluating only
-    if not args.eval:
+    # shuffle the data, unless we are predicting
+    if not args.predict:
         indices = np.arange(len(corpus_src))
         np.random.seed(args.seed)
         np.random.shuffle(indices)
@@ -168,12 +167,10 @@ def compute_metrics(eval_preds, tokenizer):
     chrf = CHRF()
     bleu = BLEU()
     ter = TER()
-    comet = COMET()
     
     results["bleu"] = bleu.corpus_score(decode_preds, [decode_labels]).score
     results["chrf"] = chrf.corpus_score(decode_preds, [decode_labels]).score
     results["ter"] = ter.corpus_score(decode_preds, [decode_labels]).score
-    results["comet"] = comet.corpus_score(decode_preds, [decode_labels]).mean_score
 
     return results
 
