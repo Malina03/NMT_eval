@@ -35,8 +35,7 @@ fi
 
 python /home1/s3412768/NMT_eval/src/train.py \
     --root_dir $root_dir \
-    --train_file $root_dir/data/$corpus.en-$language.cyrillic.dedup.norm.tsv.tag \
-    --train_file_2 $root_dir/data/$corpus.en-$language.latin.dedup.norm.tsv.tag \
+    --train_file $root_dir/data/$corpus.en-$language.both.orig.dedup.norm.tsv.tag \
     --dev_file $root_dir/data/flores_dev.en-$language.tsv.tag \
     --wandb \
     --gradient_accumulation_steps 2 \
