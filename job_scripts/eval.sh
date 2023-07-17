@@ -6,6 +6,8 @@
 #SBATCH --mem=50G
 
 
+module load TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
+source $HOME/.envs/nmt_eval/bin/activate
 
 set -eu -o pipefail
 
@@ -23,7 +25,7 @@ if [[ ! -f $ref ]]; then
 	# First check if the file exists in the data folder
 	if [[ -f $eval ]]; then
 		# If so, extract the reference column
-		cut -f 2 $eval > $ref
+		cut -f2 $eval > $ref
 	else
 		echo "File $eval not found"
 	fi
@@ -34,7 +36,7 @@ if [[ ! -f $src ]]; then
 	# First check if the file exists in the data folder
 	if [[ -f $eval ]]; then
 		# If so, extract the source column
-		cut -f 1 $eval > $src
+		cut -f1 $eval > $src
 	else
 		echo "File $eval not found"
 	fi
