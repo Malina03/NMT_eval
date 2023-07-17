@@ -27,7 +27,6 @@ if __name__ == "__main__":
     if args.checkpoint is None:
         config = AutoConfig.from_pretrained(args.model_name)
         model = AutoModelForSeq2SeqLM.from_pretrained(args.model_name, config=config)
-        print("pad_token_id: ", config.pad_token_id)
     else:
         model = AutoModelForSeq2SeqLM.from_pretrained(args.checkpoint, local_files_only=True)
 
