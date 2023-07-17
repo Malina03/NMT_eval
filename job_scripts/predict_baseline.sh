@@ -59,6 +59,8 @@ for language in "${languages[@]}"; do
     
     python /home1/s3412768/NMT_eval/src/train.py \
         --root_dir $root_dir \
+        --train_file $test_file \
+        --dev_file $test_file \
         --test_file $test_file\
         --gradient_accumulation_steps 2 \
         --batch_size 16 \

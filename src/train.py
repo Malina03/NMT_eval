@@ -11,22 +11,20 @@ if __name__ == "__main__":
     args = get_args()
     if args.wandb:
         # only log the training process 
-        wandb_name = f"{args.exp_type}_{args.train_file.split('/')[-1].split('.')[0]}"
+        wandb_name = f"{args.train_file.split('/')[-1].split('.')[1]}_{args.train_file.split('/')[-1].split('.')[0]}"
         # Initialize wandb
         wandb.init(project="NMT_eval", name=wandb_name, config=args)
 
     
     # Load the data
     tokenizer = AutoTokenizer.from_pretrained(args.model_name, max_length=args.max_length, truncation=True)
+    train_dataset = load_data(args.train_file, args, tokenizer=tokenizer)
+    dev_dataset= load_data(args.dev_file, args, tokenizer=tokenizer)
 
     if args.eval or args.predict:
         test_dataset = load_data(args.test_file, args, tokenizer=tokenizer)
-        train_dataset = None
-        dev_dataset = None
-    else:
-        train_dataset = load_data(args.train_file, args, tokenizer=tokenizer)
-        dev_dataset= load_data(args.dev_file, args, tokenizer=tokenizer)
 
+ 
     # Load the model
     if args.checkpoint is None:
         config = AutoConfig.from_pretrained(args.model_name)
