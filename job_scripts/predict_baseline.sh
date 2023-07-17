@@ -3,8 +3,8 @@
 #SBATCH --time=2:00:00
 #SBATCH --job-name=baseline
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:a100:1
-#SBATCH --mem=50G
+#SBATCH --gpus-per-node=1
+#SBATCH --mem=20G
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=m.chichirau@student.rug.nl
 
