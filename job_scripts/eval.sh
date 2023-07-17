@@ -4,15 +4,43 @@
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:v100:1
 #SBATCH --mem=50G
-#SBATCH --mail-type=ALL
-#SBATCH --mail-user=rikvannoord@gmail.com
+
+
 
 set -eu -o pipefail
 
 # Calculate all metrics between two files
 out=$1 # File produced by model
-ref=$2 # Gold standard file
-src=$3 # Source file for translation (needed by COMET)
+eval=$2 # File from which to extract ref and src
+lang=$3 # Language of the target file (needed for BERT-score)
+
+ref=$eval.ref
+src=$eval.src
+
+# check if ref and src files exist and create them if not
+if [[ ! -f $ref ]]; then
+	echo "Reference file $ref not found, create it"
+	# First check if the file exists in the data folder
+	if [[ -f $eval ]]; then
+		# If so, extract the reference column
+		cut -f 2 $eval > $ref
+	else
+		echo "File $eval not found"
+	fi
+fi
+
+if [[ ! -f $src ]]; then
+	echo "Source file $src not found, create it"
+	# First check if the file exists in the data folder
+	if [[ -f $eval ]]; then
+		# If so, extract the source column
+		cut -f 1 $eval > $src
+	else
+		echo "File $eval not found"
+	fi
+fi
+
+
 
 if [[ ! -f $out ]]; then
 	echo "Output file $out not found, skip evaluation"
@@ -20,7 +48,6 @@ else
 	# NOTE: automatically get target language by last 2 chars of ref file
 	# So assume it is called something like wiki.en-mt for example
 	# Otherwise just manually specify it below
-	lang=${ref: -2}
 	
 	# Skip whole BLEU/chrf section if last file already exists
 	
