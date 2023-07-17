@@ -1,7 +1,7 @@
 import argparse
 from transformers import Seq2SeqTrainingArguments
 import numpy as np
-from sacrebleu.metrics import BLEU, CHRF, TER
+from sacrebleu.metrics import BLEU, CHRF, TER, COMET
 import os
 import torch
 
@@ -18,9 +18,9 @@ def get_args():
     parser.add_argument("-wandb", "--wandb", required=False, action="store_true", help="Whether to log the training process on wandb.")
     parser.add_argument("-eval_baseline", "--eval_baseline", required=False, action="store_true", help="Whether to evaluate the baseline model before fine-tuning.")
 
-    parser.add_argument("-train_file", "--train_file", required=True, type=str, help="Path to the training file.")
+    parser.add_argument("-train_file", "--train_file", required=False, type=str, help="Path to the training file.")
     parser.add_argument("-train_file_2", "--train_file_2", required=False, type=str, help="Path to the second training file, for languages written in 2 scipts..")
-    parser.add_argument("-dev_file", "--dev_file", required=True, type=str, help="Path to the development data  file.")
+    parser.add_argument("-dev_file", "--dev_file", required=False, type=str, help="Path to the development data  file.")
     parser.add_argument("-test_file", "--test_file", required=False, type=str, help="Path to the test data file.")
 
     parser.add_argument("-model_name", "--model_name", required=True, type=str, help="Name of the model to fine-tune. Must be a model from Huggingface.")
@@ -134,15 +134,16 @@ def load_data(filename, args, tokenizer):
                     continue
     if error_count > 0:
         print("Errors when loading data: ", error_count)
-    # shuffle the data
-    indices = np.arange(len(corpus_src))
-    np.random.seed(args.seed)
-    np.random.shuffle(indices)
-    corpus_src = np.array(corpus_src)[indices]
-    corpus_tgt = np.array(corpus_tgt)[indices]
-    # make data lists again
-    corpus_src = corpus_src.tolist()
-    corpus_tgt = corpus_tgt.tolist()
+    # shuffle the data, unless evaluating only
+    if not args.eval:
+        indices = np.arange(len(corpus_src))
+        np.random.seed(args.seed)
+        np.random.shuffle(indices)
+        corpus_src = np.array(corpus_src)[indices]
+        corpus_tgt = np.array(corpus_tgt)[indices]
+        # make data lists again
+        corpus_src = corpus_src.tolist()
+        corpus_tgt = corpus_tgt.tolist()
     # tokenize the data
     model_inputs = tokenizer(corpus_src, max_length=args.max_length, truncation=True)
     encoded_tgt = tokenizer(text_target=corpus_tgt, max_length=args.max_length, truncation=True)
@@ -167,10 +168,12 @@ def compute_metrics(eval_preds, tokenizer):
     chrf = CHRF()
     bleu = BLEU()
     ter = TER()
+    comet = COMET()
     
     results["bleu"] = bleu.corpus_score(decode_preds, [decode_labels]).score
     results["chrf"] = chrf.corpus_score(decode_preds, [decode_labels]).score
     results["ter"] = ter.corpus_score(decode_preds, [decode_labels]).score
+    results["comet"] = comet.corpus_score(decode_preds, [decode_labels]).mean_score
 
     return results
 

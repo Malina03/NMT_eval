@@ -22,33 +22,50 @@ export CUDA_VISIBLE_DEVICES=0
 #load environment
 source /home1/s3412768/.envs/nmt2/bin/activate
 
-corpus="MaCoCuV1"
+train_corpus="MaCoCuV2"
 
-root_dir="/scratch/hb-macocu/NMT_eval/en-sq"
+root="/scratch/hb-macocu/NMT_eval"
 
-corpora=("QED" "TED2020" "flores200.devtest" "WikiMatrix")
-# corpora=("flores200.devtest")
+# corpora=("QED" "TED2020" "flores200.devtest" "WikiMatrix")
+test_corpus="flores_devtest"
 
-for eval_corpus in ${corpora[@]}; do
-    log_file="/scratch/hb-macocu/NMT_eval/en-sq/logs/eval/baseline/eval_${eval_corpus}.log"
-        
-    if [ $eval_corpus = 'flores.devtest' ]; then 
-        test_file="${root_dir}/data/${eval_corpus}.tsv"
-    else
-        test_file="${root_dir}/data/${eval_corpus}.en-sq.tsv.dedup.test"
+languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
+
+for language in "${languages[@]}"; do
+    root_dir="${root}/en-${language}"
+    log_file="${root_dir}/logs/eval/baseline/eval_${test_corpus}.log"
+    # if log directory does not exist, create it
+    if [ ! -d "$root_dir/logs/eval/baseline" ]; then
+        mkdir -p $root_dir/logs/eval/baseline
     fi
+    
+    # for cnr, hr, sr, bs use the same model
+    if [ $language = 'cnr' ] || [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ]; then
+        model="Helsinki-NLP/opus-mt-tc-base-en-sh"
+    elif [ $language = 'sl' ]; then
+        model='Helsinki-NLP/opus-mt-en-sla'
+    elif [ $language = 'tr' ]; then
+        model="Helsinki-NLP/opus-mt-tc-big-en-tr"
+    else
+        model="Helsinki-NLP/opus-mt-en-${language}"
+    fi
+
+    # for cnr, hr, sr, bs, sl, bg use files ending in .tag
+    if [ $language = 'cnr' ] || [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ] || [ $language = 'sl' ] || [ $language = 'bg' ]; then
+        test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv.tag"
+    else
+        test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv"
+    fi  
     
     python /home1/s3412768/NMT_eval/src/train.py \
         --root_dir $root_dir \
-        --train_file "$root_dir/data/${corpus}.en-sq.tsv.dedup" \
-        --dev_file $root_dir/data/flores200.dev.en-sq.tsv.dedup \
         --test_file $test_file\
         --gradient_accumulation_steps 2 \
         --batch_size 16 \
         --gradient_checkpointing \
         --adafactor \
         --exp_type eval/baseline \
-        --model_name Helsinki-NLP/opus-mt-en-sq \
+        --model_name $model \
         --eval \
         --predict \
         &> $log_file 
