@@ -61,7 +61,7 @@ for language in "${languages[@]}"; do
     if [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ] || [ $language = 'sl' ] || [ $language = 'bg' ]; then
         test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv.tag"
     elif [ $language = 'cnr' ]; then 
-        test_file='OpusSubs.dev.en-cnr.dedup.norm.tsv.tag'
+        test_file="${root_dir}/data/OpusSubs.test.en-cnr.dedup.norm.tsv.tag"
     else
         test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv"
     fi  

@@ -29,7 +29,7 @@ for lang in "${languages[@]}"; do
     out=$root/en-$lang/logs/eval/$train_corpus/flores_devtest_predictions.txt
 
     if [ $lang = 'cnr' ]; then
-        eval=$root/en-$lang/data/OpusSubs.dev.en-cnr.dedup.norm.tsv
+        eval=$root/en-$lang/data/OpusSubs.test.en-cnr.dedup.norm.tsv
         out=$root/en-$lang/logs/eval/$train_corpus/OpusSubs_predictions.txt
     else
         eval=$root/en-$lang/data/flores_devtest.en-$lang.tsv
