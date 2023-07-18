@@ -75,7 +75,7 @@ else
 	if [[ -f "${out}.eval.bleurt" ]]; then
 		echo "Eval file already exists, skip BLEURT"
 	else
-		python -m bleurt.score_files -candidate_file=${out} -reference_file=${ref} -bleurt_checkpoint BLEURT-20 -scores_file=${out}.eval.bleurt
+		srun python -m bleurt.score_files -candidate_file=${out} -reference_file=${ref} -bleurt_checkpoint BLEURT-20 -scores_file=${out}.eval.bleurt
 	fi
 
 	# COMET (might not work so well for Maltese, as it is not in XLM-R)
