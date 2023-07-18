@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=2:00:00
+#SBATCH --time=2:30:00
 #SBATCH --job-name=baseline
 #SBATCH --partition=gpu
 #SBATCH --gpus-per-node=1
@@ -29,8 +29,9 @@ root="/scratch/hb-macocu/NMT_eval"
 # corpora=("QED" "TED2020" "flores200.devtest" "WikiMatrix")
 test_corpus="flores_devtest"
 
-# languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
-languages=("bs" "cnr" "hr" "sr" "tr")
+languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
+# languages=("bs" "cnr" "hr" "sr" "tr")
+# languages=("bg" "is" "mk" "mt" "sl" "sq")
 
 for language in "${languages[@]}"; do
     root_dir="${root}/en-${language}"

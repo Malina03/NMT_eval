@@ -1,11 +1,12 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=00:14:59
+#SBATCH --time=00:30:00
+#SBATCH --job-name=eval
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:v100:1
+#SBATCH --gpus-per-node=1
 #SBATCH --mem=50G
 
-
+module purge
 module load TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
 source $HOME/.envs/nmt_eval/bin/activate
 
