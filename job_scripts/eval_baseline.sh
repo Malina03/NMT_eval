@@ -24,7 +24,11 @@ root="/scratch/hb-macocu/NMT_eval"
 for lang in "${languages[@]}"; do
 
     out=$root/en-$lang/logs/eval/baseline/flores_devtest_predictions.txt
-    eval=$root/en-$lang/data/flores_dev.en-$lang.tsv
+    if [[ $lang='cnr' ]]; then
+        eval=$root/en-$lang/data/OpusSubs.dev.en-cnr.dedup.norm.tsv
+    else
+        eval=$root/en-$lang/data/flores_devtest.en-$lang.tsv
+    fi
 
     ref=$eval.ref
     src=$eval.src
@@ -111,3 +115,5 @@ for lang in "${languages[@]}"; do
             bert-score --lang $lang -m $model -r $ref -c $out > ${out}.eval.bertscore
         fi
     fi
+    
+done
