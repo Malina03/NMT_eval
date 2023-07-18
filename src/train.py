@@ -68,6 +68,12 @@ if __name__ == "__main__":
                 for pred in predictions:
                     f.write(pred + "\n")
             print("\nInfo:\n", output.metrics, "\n")
+            print("Tested on:", args.test_file)
+            print('Predictions saved to:', os.path.join(logging_dir, f'{eval_corpus}_predictions.txt'))
+            if args.checkpoint is not None:
+                print("Model from:", args.checkpoint)
+            else:
+                print("Baseline model:", args.model_name)
      
         else:
             metrics = trainer.evaluate()

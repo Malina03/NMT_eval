@@ -29,7 +29,8 @@ root="/scratch/hb-macocu/NMT_eval"
 # corpora=("QED" "TED2020" "flores200.devtest" "WikiMatrix")
 test_corpus="flores_devtest"
 
-languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
+# languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
+languages=("bs" "cnr" "hr" "sr" "tr")
 
 for language in "${languages[@]}"; do
     root_dir="${root}/en-${language}"
@@ -51,8 +52,10 @@ for language in "${languages[@]}"; do
     fi
 
     # for cnr, hr, sr, bs, sl, bg use files ending in .tag
-    if [ $language = 'cnr' ] || [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ] || [ $language = 'sl' ] || [ $language = 'bg' ]; then
+    if [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ] || [ $language = 'sl' ] || [ $language = 'bg' ]; then
         test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv.tag"
+    elif [ $language = 'cnr']; then 
+        test_file='OpusSubs.dev.en-cnr.dedup.norm.tsv.tag'
     else
         test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv"
     fi  
