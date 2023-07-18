@@ -24,8 +24,10 @@ root="/scratch/hb-macocu/NMT_eval"
 for lang in "${languages[@]}"; do
 
     out=$root/en-$lang/logs/eval/baseline/flores_devtest_predictions.txt
-    if [[ $lang='cnr' ]]; then
+
+    if [ $lang = 'cnr' ]; then
         eval=$root/en-$lang/data/OpusSubs.dev.en-cnr.dedup.norm.tsv
+        out=$root/en-$lang/logs/eval/baseline/OpusSubs_predictions.txt
     else
         eval=$root/en-$lang/data/flores_devtest.en-$lang.tsv
     fi
