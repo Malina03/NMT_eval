@@ -1,7 +1,7 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
 #SBATCH --time=2:30:00
-#SBATCH --job-name=baseline
+#SBATCH --job-name=pred
 #SBATCH --partition=gpu
 #SBATCH --gpus-per-node=1
 #SBATCH --mem=20G
@@ -52,6 +52,17 @@ for language in "${languages[@]}"; do
     else
         test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv"
     fi  
+
+        # for cnr, hr, sr, bs use the same model
+    if [ $language = 'cnr' ] || [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ]; then
+        model="Helsinki-NLP/opus-mt-tc-base-en-sh"
+    elif [ $language = 'sl' ]; then
+        model='Helsinki-NLP/opus-mt-en-sla'
+    elif [ $language = 'tr' ]; then
+        model="Helsinki-NLP/opus-mt-tc-big-en-tr"
+    else
+        model="Helsinki-NLP/opus-mt-en-${language}"
+    fi
     
     python /home1/s3412768/NMT_eval/src/train.py \
         --root_dir $root_dir \
@@ -64,6 +75,7 @@ for language in "${languages[@]}"; do
         --adafactor \
         --exp_type "eval/${train_corpus}" \
         --checkpoint $checkpoint \
+        --model_name $model \
         --eval \
         --predict \
         &> $log_file 
