@@ -34,6 +34,12 @@ languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
 # languages=("bg" "is" "mk" "mt" "sl" "sq")
 
 for language in "${languages[@]}"; do
+    if [ $language = 'cnr' ]; then
+        test_corpus="OpusSubs"
+    else
+        test_corpus="flores_devtest"
+    fi
+
     root_dir="${root}/en-${language}"
     log_file="${root_dir}/logs/eval/baseline/eval_${test_corpus}.log"
     # if log directory does not exist, create it

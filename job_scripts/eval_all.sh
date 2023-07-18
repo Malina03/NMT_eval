@@ -12,7 +12,8 @@ source $HOME/.envs/nmt_eval/bin/activate
 
 set -eu -o pipefail
 
-languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
+# languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
+languages=("cnr")
 
 train_corpus="MaCoCuV2"
 
