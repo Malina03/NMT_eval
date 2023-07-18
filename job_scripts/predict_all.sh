@@ -37,7 +37,7 @@ languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "tr")
 
 for language in "${languages[@]}"; do
     root_dir="${root}/en-${language}"
-    log_file="${root_dir}/logs/eval/logs/eval/${train_corpus}/eval_${test_corpus}.log"
+    log_file="${root_dir}/logs/eval/${train_corpus}/eval_${test_corpus}.log"
     # if log directory does not exist, create it
     if [ ! -d "${root_dir}/logs/eval/${train_corpus}" ]; then
         mkdir -p $root_dir/logs/eval/$train_corpus
