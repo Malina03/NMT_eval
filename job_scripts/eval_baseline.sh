@@ -103,13 +103,13 @@ for lang in "${languages[@]}"; do
         ## BERT-score
         # First select the model based on the language
         # Highest scoring multi-lingual model (Maltese not in there)
-        if [[ $lang = "mt" ]]; then
-            # This model is 15G, can take quite a while to download
-            model="google/mt5-xl" 
-        else
-            model="xlm-roberta-large" 
-        fi
-
+        # if [[ $lang = "mt" ]]; then
+        #     # This model is 15G, can take quite a while to download
+        #     model="google/mt5-xl" 
+        # else
+        #     model="xlm-roberta-large" 
+        # fi
+        model="xlm-roberta-large" 
         # Now run the scoring
         if [[ -f "${out}.eval.bertscore" ]]; then
             echo "Eval file already exists, skip bert-score"
