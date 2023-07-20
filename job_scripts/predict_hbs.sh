@@ -25,14 +25,14 @@ source /home1/s3412768/.envs/nmt2/bin/activate
 train_corpus="MaCoCuV2"
 
 root="/scratch/hb-macocu/NMT_eval"
-
+root_dir="${root}/en-hbs"
+checkpoint=$root_dir/models/fine_tune/$train_corpus/checkpoint-*
+model="Helsinki-NLP/opus-mt-tc-base-en-sh"
 
 # languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
 
 languages=("bs" "cnr" "hr" "sr")
 
-checkpoint=$root_dir/models/fine_tune/$train_corpus/checkpoint-*
-model="Helsinki-NLP/opus-mt-tc-base-en-sh"
 
 for language in "${languages[@]}"; do
 
@@ -42,7 +42,6 @@ for language in "${languages[@]}"; do
         test_corpus="flores_devtest"
     fi
 
-    root_dir="${root}/en-hbs"
     log_file="${root_dir}/logs/eval/${train_corpus}/${language}/eval_${test_corpus}.log"
     # if log directory does not exist, create it
     if [ ! -d "${root_dir}/logs/eval/${train_corpus}/${language}" ]; then
