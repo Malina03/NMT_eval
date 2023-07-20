@@ -51,11 +51,11 @@ for language in "${languages[@]}"; do
     
     # for cnr, hr, sr, bs, sl, bg use files ending in .tag
     if [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ] || [ $language = 'sl' ] || [ $language = 'bg' ]; then
-        test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv.tag"
+        test_file="${root}/en-${language}/data/${test_corpus}.en-${language}.tsv.tag"
     elif [ $language = 'cnr' ]; then 
-        test_file="${root_dir}/data/OpusSubs.test.en-cnr.dedup.norm.tsv.tag"
+        test_file="${root}/en-cnr/data/OpusSubs.test.en-cnr.dedup.norm.tsv.tag"
     else
-        test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv"
+        test_file="${root}/en-${language}/data/${test_corpus}.en-${language}.tsv"
     fi  
     
     python /home1/s3412768/NMT_eval/src/train.py \
