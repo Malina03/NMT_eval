@@ -29,8 +29,8 @@ root="/scratch/hb-macocu/NMT_eval"
 # corpora=("QED" "TED2020" "flores200.devtest" "WikiMatrix")
 test_corpus="flores_devtest"
 
-# languages=("bg" "bs" "cnr" "hr" "is" "mk" "mt" "sl" "sq" "sr" "tr")
-languages=("cnr")
+languages=("bg" "bs" "cnr" "hr" "is" "mk" "mt" "sl" "sq" "sr" "tr")
+# languages=("cnr")
 
 for language in "${languages[@]}"; do
     if [ $language = 'cnr' ]; then
