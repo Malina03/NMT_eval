@@ -27,8 +27,8 @@ if __name__ == "__main__":
  
     # Load the model
     if args.checkpoint is None:
-        config = AutoConfig.from_pretrained(args.model_name)
-        model = AutoModelForSeq2SeqLM.from_pretrained(args.model_name, config=config)
+        # config = AutoConfig.from_pretrained(args.model_name)
+        model = AutoModelForSeq2SeqLM.from_pretrained(args.model_name)
     else:
         model = AutoModelForSeq2SeqLM.from_pretrained(args.checkpoint, local_files_only=True)
 
