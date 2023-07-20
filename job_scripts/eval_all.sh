@@ -13,9 +13,10 @@ source $HOME/.envs/nmt_eval/bin/activate
 set -eu -o pipefail
 
 # languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
-languages=("cnr")
+languages=("bg" "hr" "is" "mk" "mt" "sl" "tr")
+# languages=("cnr")
 
-train_corpus="MaCoCuV2"
+train_corpus="MaCoCuV1"
 
 # # Calculate all metrics between two files
 # out=$1 # File produced by model
