@@ -1,7 +1,7 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
 #SBATCH --time=02:00:00
-#SBATCH --job-name=eval
+#SBATCH --job-name=hbs
 #SBATCH --partition=gpu
 #SBATCH --gpus-per-node=1
 #SBATCH --mem=20G
@@ -28,7 +28,7 @@ for lang in "${languages[@]}"; do
 
     if [ $lang = 'cnr' ]; then
         eval=$root/en-$lang/data/OpusSubs.test.en-cnr.dedup.norm.tsv
-        out=$root/en-hbs/logs/eval/$train_corpus/OpusSubs_predictions.txt
+        out=$root/en-hbs/logs/eval/$train_corpus/$lang/OpusSubs_predictions.txt
     else
         eval=$root/en-$lang/data/flores_devtest.en-$lang.tsv
         out=$root/en-hbs/logs/eval/$train_corpus/$lang/flores_devtest_predictions.txt
