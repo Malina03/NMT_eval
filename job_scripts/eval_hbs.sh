@@ -12,8 +12,7 @@ source $HOME/.envs/nmt_eval/bin/activate
 
 set -eu -o pipefail
 
-# languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
-languages=("cnr")
+languages=("bs" "cnr" "hr" "sr")
 
 train_corpus="MaCoCuV2"
 
@@ -26,14 +25,12 @@ root="/scratch/hb-macocu/NMT_eval"
 
 for lang in "${languages[@]}"; do
 
-    
     if [ $lang = 'cnr' ]; then
         eval=$root/en-$lang/data/OpusSubs.test.en-cnr.dedup.norm.tsv
         out=$root/en-$lang/logs/eval/$train_corpus/OpusSubs_predictions.txt
     else
         eval=$root/en-$lang/data/flores_devtest.en-$lang.tsv
-        out=$root/en-$lang/logs/eval/$train_corpus/flores_devtest_predictions.txt
-
+        out=$root/en-hbs/logs/eval/$train_corpus/$lang/flores_devtest_predictions.txt
     fi
 
     ref=$eval.ref
