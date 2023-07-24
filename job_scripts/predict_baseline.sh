@@ -48,7 +48,7 @@ for language in "${languages[@]}"; do
     
     # for cnr, hr, sr, bs use the same model
     if [ $language = 'cnr' ] || [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ]; then
-        model="Helsinki-NLP/opus-mt-tc-base-en-sla"
+        model="Helsinki-NLP/opus-mt-en-sla"
     elif [ $language = 'sl' ]; then
         model='Helsinki-NLP/opus-mt-en-sla'
     elif [ $language = 'tr' ]; then
