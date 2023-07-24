@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=48:00:00
+#SBATCH --time=72:00:00
 #SBATCH --job-name=tr-v1
 #SBATCH --partition=gpu
 #SBATCH --gpus-per-node=1
@@ -23,7 +23,9 @@ source /home1/s3412768/.envs/nmt2/bin/activate
 
 corpus="MaCoCuV1"
 language="tr"
-model="Helsinki-NLP/opus-mt-tc-big-en-tr"
+# model="Helsinki-NLP/opus-mt-tc-big-en-tr"
+model="Helsinki-NLP/opus-mt-en-trk"
+
 
 
 root_dir="/scratch/hb-macocu/NMT_eval/en-${language}"
@@ -35,8 +37,8 @@ fi
 
 python /home1/s3412768/NMT_eval/src/train.py \
     --root_dir $root_dir \
-    --train_file $root_dir/data/$corpus.en-$language.dedup.norm.tsv \
-    --dev_file $root_dir/data/flores_dev.en-$language.tsv \
+    --train_file $root_dir/data/$corpus.en-$language.dedup.norm.tsv.tag \
+    --dev_file $root_dir/data/flores_dev.en-$language.tsv.tag \
     --wandb \
     --gradient_accumulation_steps 2 \
     --batch_size 16 \

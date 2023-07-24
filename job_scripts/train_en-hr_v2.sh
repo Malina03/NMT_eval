@@ -23,7 +23,9 @@ source /home1/s3412768/.envs/nmt2/bin/activate
 
 corpus="MaCoCuV2"
 language="hr"
-model="Helsinki-NLP/opus-mt-tc-base-en-sh"
+# model="Helsinki-NLP/opus-mt-tc-base-en-sh"
+model="Helsinki-NLP/opus-mt-en-sla"
+
 
 
 root_dir="/scratch/hb-macocu/NMT_eval/en-${language}"

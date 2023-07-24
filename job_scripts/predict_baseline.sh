@@ -29,8 +29,8 @@ root="/scratch/hb-macocu/NMT_eval"
 # corpora=("QED" "TED2020" "flores200.devtest" "WikiMatrix")
 test_corpus="flores_devtest"
 
-languages=("bg" "bs" "cnr" "hr" "is" "mk" "mt" "sl" "sq" "sr" "tr")
-# languages=("cnr")
+# languages=("bg" "bs" "cnr" "hr" "is" "mk" "mt" "sl" "sq" "sr" "tr")
+languages=( "bs" "cnr" "hr" "sr" "tr")
 
 for language in "${languages[@]}"; do
     if [ $language = 'cnr' ]; then
@@ -48,20 +48,23 @@ for language in "${languages[@]}"; do
     
     # for cnr, hr, sr, bs use the same model
     if [ $language = 'cnr' ] || [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ]; then
-        model="Helsinki-NLP/opus-mt-tc-base-en-sh"
+        model="Helsinki-NLP/opus-mt-tc-base-en-sla"
     elif [ $language = 'sl' ]; then
         model='Helsinki-NLP/opus-mt-en-sla'
     elif [ $language = 'tr' ]; then
-        model="Helsinki-NLP/opus-mt-tc-big-en-tr"
+        # model="Helsinki-NLP/opus-mt-tc-big-en-tr"
+        model="Helsinki-NLP/opus-mt-en-trk"
     else
         model="Helsinki-NLP/opus-mt-en-${language}"
     fi
 
     # for cnr, hr, sr, bs, sl, bg use files ending in .tag
-    if [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ] || [ $language = 'sl' ] || [ $language = 'bg' ]; then
+    if [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'sl' ] || [ $language = 'bg' ] || [ $language = 'tr' ]; then
         test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv.tag"
+    elif [ $language = 'bs' ]; then
+        test_file="${root_dir}/data/${test_corpus}.en-${language}.both.latin.dedup.norm.tsv.tag"
     elif [ $language = 'cnr' ]; then 
-        test_file="${root_dir}/data/OpusSubs.test.en-cnr.dedup.norm.tsv.tag"
+        test_file="${root_dir}/data/OpusSubs.test.en-cnr.dedup.norm.tsv.srp.tag"
     else
         test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv"
     fi  

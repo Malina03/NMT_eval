@@ -23,7 +23,8 @@ source /home1/s3412768/.envs/nmt2/bin/activate
 
 corpus="MaCoCuV2"
 language="cnr"
-model="Helsinki-NLP/opus-mt-tc-base-en-sh"
+# model="Helsinki-NLP/opus-mt-tc-base-en-sh"
+model="Helsinki-NLP/opus-mt-en-sla"
 
 
 root_dir="/scratch/hb-macocu/NMT_eval/en-${language}"
@@ -35,8 +36,8 @@ fi
 
 python /home1/s3412768/NMT_eval/src/train.py \
     --root_dir $root_dir \
-    --train_file $root_dir/data/$corpus.en-$language.both.orig.dedup.norm.tsv.tag \
-    --dev_file $root_dir/data/OpusSubs.dev.en-cnr.dedup.norm.tsv.tag \
+    --train_file $root_dir/data/$corpus.en-$language.both.latin.dedup.norm.tsv.srp.tag \
+    --dev_file $root_dir/data/OpusSubs.dev.en-cnr.dedup.norm.tsv.srp.tag \
     --wandb \
     --gradient_accumulation_steps 2 \
     --batch_size 16 \
