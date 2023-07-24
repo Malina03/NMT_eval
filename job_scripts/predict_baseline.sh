@@ -59,10 +59,8 @@ for language in "${languages[@]}"; do
     fi
 
     # for cnr, hr, sr, bs, sl, bg use files ending in .tag
-    if [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'sl' ] || [ $language = 'bg' ] || [ $language = 'tr' ]; then
+    if [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ] || [ $language = 'sl' ] || [ $language = 'bg' ] || [ $language = 'tr' ]; then
         test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv.tag"
-    elif [ $language = 'bs' ]; then
-        test_file="${root_dir}/data/${test_corpus}.en-${language}.both.latin.dedup.norm.tsv.tag"
     elif [ $language = 'cnr' ]; then 
         test_file="${root_dir}/data/OpusSubs.test.en-cnr.dedup.norm.tsv.srp.tag"
     else
