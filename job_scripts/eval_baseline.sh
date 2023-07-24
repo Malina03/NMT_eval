@@ -12,8 +12,8 @@ source $HOME/.envs/nmt_eval/bin/activate
 
 set -eu -o pipefail
 
-languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
-
+# languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
+languages=("bs" "cnr" "hr" "sr" "tr")
 # # Calculate all metrics between two files
 # out=$1 # File produced by model
 # eval=$2 # File from which to extract ref and src
