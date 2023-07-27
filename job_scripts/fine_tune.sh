@@ -44,13 +44,13 @@ fi
 
 # for cnr, hr, sr, bs, sl, bg use files ending in .tag
 if [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ] || [ $language = 'sl' ] || [ $language = 'bg' ] || [ $language = 'tr' ]; then
-    train_file="$root_dir/data/${corpus}.en-$language.tsv.dedup.norm.tag"
+    train_file="$root_dir/data/${corpus}.en-$language.dedup.norm.tsv.tag"
     dev_file="$root_dir/data/flores.dev.en-$language.tsv.tag"
 elif [ $language = 'cnr' ]; then 
-    train_file="$root_dir/data/${corpus}.en-$language.tsv.dedup.norm.srp.tag"
+    train_file="$root_dir/data/${corpus}.en-$language.dedup.norm.srp.tsv.tag"
     dev_file="$root_dir/data/OpusSubs.dev.en-cnr.dedup.norm.srp.tag"
 else # is mk mt sq don't need tags
-    train_file="$root_dir/data/${corpus}.en-$language.tsv.dedup.norm"
+    train_file="$root_dir/data/${corpus}.en-$language.dedup.norm.tsv"
     dev_file="${root_dir}/data/flores.dev.en-${language}.tsv"
 fi    
 

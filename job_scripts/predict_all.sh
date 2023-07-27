@@ -22,13 +22,13 @@ export CUDA_VISIBLE_DEVICES=0
 #load environment
 source /home1/s3412768/.envs/nmt2/bin/activate
 
-train_corpus="MaCoCuV2"
-# train_corpus="MaCoCuV1"
+# train_corpus="MaCoCuV2"
+train_corpus="MaCoCuV1"
 
 root="/scratch/hb-macocu/NMT_eval"
 
 # languages=("bg" "bs" "cnr" "hr" "is" "mk" "mt" "sl" "sq" "sr" "tr")
-languages=("bs" "cnr" "hr" "sr" "tr")
+languages=("hr" "tr")
 
 
 for language in "${languages[@]}"; do
@@ -40,7 +40,7 @@ for language in "${languages[@]}"; do
     fi
 
     root_dir="${root}/en-${language}"
-    
+
     checkpoint=$root_dir/models/fine_tune/$train_corpus/checkpoint-*
     log_file="${root_dir}/logs/eval/${train_corpus}/eval_${test_corpus}.log"
     # if log directory does not exist, create it
