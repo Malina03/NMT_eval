@@ -40,6 +40,8 @@ for language in "${languages[@]}"; do
     fi
 
     root_dir="${root}/en-${language}"
+    
+    checkpoint=$root_dir/models/fine_tune/$train_corpus/checkpoint-*
     log_file="${root_dir}/logs/eval/${train_corpus}/eval_${test_corpus}.log"
     # if log directory does not exist, create it
     if [ ! -d "$root_dir/logs/eval/${train_corpus}" ]; then
