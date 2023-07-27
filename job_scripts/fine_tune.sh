@@ -45,13 +45,13 @@ fi
 # for cnr, hr, sr, bs, sl, bg use files ending in .tag
 if [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ] || [ $language = 'sl' ] || [ $language = 'bg' ] || [ $language = 'tr' ]; then
     train_file="$root_dir/data/${corpus}.en-$language.dedup.norm.tsv.tag"
-    dev_file="$root_dir/data/flores.dev.en-$language.tsv.tag"
+    dev_file="$root_dir/data/flores_dev.en-$language.tsv.tag"
 elif [ $language = 'cnr' ]; then 
     train_file="$root_dir/data/${corpus}.en-$language.dedup.norm.srp.tsv.tag"
-    dev_file="$root_dir/data/OpusSubs.dev.en-cnr.dedup.norm.srp.tag"
+    dev_file="$root_dir/data/OpusSubsdev.en-cnr.dedup.norm.srp.tag"
 else # is mk mt sq don't need tags
     train_file="$root_dir/data/${corpus}.en-$language.dedup.norm.tsv"
-    dev_file="${root_dir}/data/flores.dev.en-${language}.tsv"
+    dev_file="${root_dir}/data/flores_dev.en-${language}.tsv"
 fi    
 
 python /home1/s3412768/NMT_eval/src/train.py \
