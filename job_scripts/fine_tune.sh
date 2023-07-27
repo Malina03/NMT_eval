@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
-#SBATCH --time=100:00:00
+#SBATCH --time=96:00:00
 #SBATCH --job-name=fine_tune
 #SBATCH --partition=gpu
 #SBATCH --gpus-per-node=1
