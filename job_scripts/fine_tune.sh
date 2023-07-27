@@ -4,7 +4,7 @@
 #SBATCH --job-name=fine_tune
 #SBATCH --partition=gpu
 #SBATCH --gpus-per-node=1
-#SBATCH --mem=75G
+#SBATCH --mem=100G
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=m.chichirau@student.rug.nl
 
