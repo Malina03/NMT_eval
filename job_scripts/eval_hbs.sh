@@ -70,36 +70,36 @@ for lang in "${languages[@]}"; do
         
         # Skip whole BLEU/chrf section if last file already exists
         
-        if [[ -f "${out}.eval.chrfpp" ]]; then
-            echo "Eval file already exists, skip BLEU and friends"
-        else
+        # if [[ -f "${out}.eval.chrfpp" ]]; then
+        #     echo "Eval file already exists, skip BLEU and friends"
+        # else
             # First put everything in 1 file
-            sacrebleu $out -i $ref -m bleu ter chrf --chrf-word-order 2 > ${out}.eval.sacre
-            # Add chrf++ to the previous file
-            sacrebleu $out -i $ref -m chrf --chrf-word-order 2 >> ${out}.eval.sacre
-            # Write only scores to individual files
-            sacrebleu $out -i $ref -m bleu -b > ${out}.eval.bleu
-            sacrebleu $out -i $ref -m ter -b > ${out}.eval.ter
-            sacrebleu $out -i $ref -m chrf -b > ${out}.eval.chrf
-            sacrebleu $out -i $ref -m chrf --chrf-word-order 2 -b > ${out}.eval.chrfpp
-        fi	
+        sacrebleu $out -i $ref -m bleu ter chrf --chrf-word-order 2 > ${out}.eval.sacre
+        # Add chrf++ to the previous file
+        sacrebleu $out -i $ref -m chrf --chrf-word-order 2 >> ${out}.eval.sacre
+        # Write only scores to individual files
+        sacrebleu $out -i $ref -m bleu -b > ${out}.eval.bleu
+        sacrebleu $out -i $ref -m ter -b > ${out}.eval.ter
+        sacrebleu $out -i $ref -m chrf -b > ${out}.eval.chrf
+        sacrebleu $out -i $ref -m chrf --chrf-word-order 2 -b > ${out}.eval.chrfpp
+        # fi	
 
         # Calculate BLEURT (pretty slow)
         # If error: 
         # module load cuDNN
         # module load GLibmm
-        if [[ -f "${out}.eval.bleurt" ]]; then
-            echo "Eval file already exists, skip BLEURT"
-        else
-            srun python -m bleurt.score_files -candidate_file=${out} -reference_file=${ref} -bleurt_checkpoint $HOME/bleurt/BLEURT-20 -scores_file=${out}.eval.bleurt
-        fi
+        # if [[ -f "${out}.eval.bleurt" ]]; then
+        #     echo "Eval file already exists, skip BLEURT"
+        # else
+        srun python -m bleurt.score_files -candidate_file=${out} -reference_file=${ref} -bleurt_checkpoint $HOME/bleurt/BLEURT-20 -scores_file=${out}.eval.bleurt
+        # fi
 
         # COMET (might not work so well for Maltese, as it is not in XLM-R)
-        if [[ -f "${out}.eval.comet" ]]; then
-            echo "Eval file already exists, skip COMET"
-        else
-            comet-score -s $src -t $out -r $ref > ${out}.eval.comet
-        fi
+        # if [[ -f "${out}.eval.comet" ]]; then
+        #     echo "Eval file already exists, skip COMET"
+        # else
+        comet-score -s $src -t $out -r $ref > ${out}.eval.comet
+        # fi
 
         ## BERT-score
         # First select the model based on the language
@@ -112,11 +112,11 @@ for lang in "${languages[@]}"; do
         # fi
         model="xlm-roberta-large" 
         # Now run the scoring
-        if [[ -f "${out}.eval.bertscore" ]]; then
-            echo "Eval file already exists, skip bert-score"
-        else
-            bert-score --lang $lang -m $model -r $ref -c $out > ${out}.eval.bertscore
-        fi
+        # if [[ -f "${out}.eval.bertscore" ]]; then
+        #     echo "Eval file already exists, skip bert-score"
+        # else
+        bert-score --lang $lang -m $model -r $ref -c $out > ${out}.eval.bertscore
+        # fi
     fi
     
 done
