@@ -27,7 +27,7 @@ train_corpus="MaCoCuV2"
 root="/scratch/hb-macocu/NMT_eval"
 root_dir="${root}/en-hbs"
 checkpoint=$root_dir/models/fine_tune/$train_corpus/checkpoint-*
-model="Helsinki-NLP/opus-mt-tc-base-en-sh"
+model="Helsinki-NLP/opus-mt-en-sla"
 
 # languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
 
@@ -48,13 +48,10 @@ for language in "${languages[@]}"; do
         mkdir -p $root_dir/logs/eval/$train_corpus/$language
     fi
     
-    # for cnr, hr, sr, bs, sl, bg use files ending in .tag
-    if [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ] || [ $language = 'sl' ] || [ $language = 'bg' ]; then
-        test_file="${root}/en-${language}/data/${test_corpus}.en-${language}.tsv.tag"
-    elif [ $language = 'cnr' ]; then 
-        test_file="${root}/en-cnr/data/OpusSubs.test.en-cnr.dedup.norm.tsv.tag"
+    if [ $language = 'cnr' ]; then 
+        test_file="${root}/en-cnr/data/OpusSubs.test.en-cnr.dedup.norm.tsv.srp.tag"
     else
-        test_file="${root}/en-${language}/data/${test_corpus}.en-${language}.tsv"
+        test_file="${root}/en-${language}/data/${test_corpus}.en-${language}.tsv.tag"
     fi  
     
     python /home1/s3412768/NMT_eval/src/train.py \

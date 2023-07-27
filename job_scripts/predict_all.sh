@@ -22,45 +22,48 @@ export CUDA_VISIBLE_DEVICES=0
 #load environment
 source /home1/s3412768/.envs/nmt2/bin/activate
 
-# train_corpus="MaCoCuV2"
-train_corpus="MaCoCuV1"
+train_corpus="MaCoCuV2"
+# train_corpus="MaCoCuV1"
 
 root="/scratch/hb-macocu/NMT_eval"
 
-
-languages=("bg" "hr" "is" "mk" "mt" "sl" "tr")
+# languages=("bg" "bs" "cnr" "hr" "is" "mk" "mt" "sl" "sq" "sr" "tr")
+languages=("bs" "cnr" "hr" "sr" "tr")
 
 
 for language in "${languages[@]}"; do
 
-    test_corpus="flores_devtest"
+    if [ $language = 'cnr' ]; then
+        test_corpus="OpusSubs"
+    else
+        test_corpus="flores_devtest"
+    fi
 
     root_dir="${root}/en-${language}"
     log_file="${root_dir}/logs/eval/${train_corpus}/eval_${test_corpus}.log"
     # if log directory does not exist, create it
-    if [ ! -d "${root_dir}/logs/eval/${train_corpus}" ]; then
-        mkdir -p $root_dir/logs/eval/$train_corpus
+    if [ ! -d "$root_dir/logs/eval/${train_corpus}" ]; then
+        mkdir -p $root_dir/logs/eval/${train_corpus}
     fi
     
-    checkpoint=$root_dir/models/fine_tune/$train_corpus/checkpoint-*
-
-    # for cnr, hr, sr, bs, sl, bg use files ending in .tag
-    if [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ] || [ $language = 'sl' ] || [ $language = 'bg' ]; then
-        test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv.tag"
-    else
-        test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv"
-    fi  
-
-        # for cnr, hr, sr, bs use the same model
-    if [ $language = 'cnr' ] || [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ]; then
-        model="Helsinki-NLP/opus-mt-tc-base-en-sh"
-    elif [ $language = 'sl' ]; then
-        model='Helsinki-NLP/opus-mt-en-sla'
+    # for cnr, hr, sr, bs use the same model
+    if [ $language = 'cnr' ] || [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ] || [ $language = 'sl' ]; then
+        model="Helsinki-NLP/opus-mt-en-sla"
     elif [ $language = 'tr' ]; then
-        model="Helsinki-NLP/opus-mt-tc-big-en-tr"
+        model="Helsinki-NLP/opus-mt-en-trk"
     else
         model="Helsinki-NLP/opus-mt-en-${language}"
     fi
+
+    # for cnr, hr, sr, bs, sl, bg use files ending in .tag
+    if [ $language = 'hr' ] || [ $language = 'sr' ] || [ $language = 'bs' ] || [ $language = 'sl' ] || [ $language = 'bg' ] || [ $language = 'tr' ]; then
+        test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv.tag"
+    elif [ $language = 'cnr' ]; then 
+        test_file="${root_dir}/data/OpusSubs.test.en-cnr.dedup.norm.tsv.srp.tag"
+    else
+        test_file="${root_dir}/data/${test_corpus}.en-${language}.tsv"
+    fi  
+    
     
     python /home1/s3412768/NMT_eval/src/train.py \
         --root_dir $root_dir \
