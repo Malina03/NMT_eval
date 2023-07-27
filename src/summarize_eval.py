@@ -27,7 +27,7 @@ def create_arg_parser():
                         help="Output format of the table, default 'fancy_grid. \
                               Useful options: latex, latex_booktabs, tsv, pretty, github")
     # Experiment files we check
-    parser.add_argument("-e", "--experiments", nargs="+", default=["dev_ep", "flores_devtest.out", "flores_dcmt", "flores_devtest_dcmt.out", "wmt16", "wmt17", "wmt18", "wmt_dev", "wmt_test", "TED", "Wiki", "QED"],
+    parser.add_argument("-l", "--languages", nargs="+", default=["bg" "bs" "cnr" "hr" "is" "mk" "mt" "sl" "sq" "sr" "tr" "hbs"],
                         help="Experiments to print scores for: default is all of them, provided they have a single score")
     # Only print specified metrics, default we print all of them
     parser.add_argument("-m", "--metrics", nargs="+", default=["bleu", "ter", "chrf", "chrfpp", "comet", "bleurt", "bertscore"],
@@ -95,12 +95,12 @@ def get_exp_fols(input_fol):
     '''Get the experiment folders based on the input folder'''
     sub_dirs = direct_subdirectories(input_fol)
     # Check if the subdirs are of a single experiment, or that we look at multiple experiments
-    if 'output' in sub_dirs:
+    if 'eval' in sub_dirs:
         exp_names = [input_fol.split('/')[-2]]
-        exp_folders = [input_fol + '/output/']
+        exp_folders = [input_fol + '/eval/']
     else:
         exp_names = sub_dirs
-        exp_folders = [os.path.join(input_fol, sub) + '/output/' for sub in sub_dirs]
+        exp_folders = [os.path.join(input_fol, sub) + '/eval/' for sub in sub_dirs]
     return exp_names, exp_folders
 
 
