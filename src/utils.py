@@ -13,12 +13,11 @@ def get_args():
     parser.add_argument("-checkpoint", "--checkpoint", required=False, type=str, help="Path to the checkpoint to fine-tune. If not provided, the model will be initialized from scratch.")
     parser.add_argument("-eval", "--eval", required=False, action="store_true", help="Whether to only evaluate the model.")
     parser.add_argument("-predict", "--predict", required=False, action="store_true", help="Whether to only predict with the model.")
-    parser.add_argument("-exp_type", "--exp_type", required=False, type=str, default="fine_tuning", help="Type of experiment. Can be 'fine_tuning' or 'from_scratch'.")
+    parser.add_argument("-exp_type", "--exp_type", required=False, type=str, default="fine_tune", help="Type of experiment. Can be 'fine_tuning' or 'from_scratch'.")
     parser.add_argument("-wandb", "--wandb", required=False, action="store_true", help="Whether to log the training process on wandb.")
     parser.add_argument("-eval_baseline", "--eval_baseline", required=False, action="store_true", help="Whether to evaluate the baseline model before fine-tuning.")
 
     parser.add_argument("-train_file", "--train_file", required=False, type=str, help="Path to the training file.")
-    parser.add_argument("-train_file_2", "--train_file_2", required=False, type=str, help="Path to the second training file, for languages written in 2 scipts..")
     parser.add_argument("-dev_file", "--dev_file", required=False, type=str, help="Path to the development data  file.")
     parser.add_argument("-test_file", "--test_file", required=False, type=str, help="Path to the test data file.")
 
@@ -72,15 +71,12 @@ def get_train_args(args):
         model_save_dir = os.path.join(args.root_dir, "models", args.exp_type, args.train_file.split("/")[-1].split(".")[0])
         if not os.path.exists(model_save_dir):
             os.makedirs(model_save_dir)
-        logging_dir = os.path.join(args.root_dir, "logs", args.exp_type, args.train_file.split("/")[-1].split(".")[0])
-        if not os.path.exists(logging_dir):
-            os.makedirs(logging_dir)
     else:
-        model_save_dir = logging_dir = args.root_dir
+        model_save_dir = args.root_dir
 
     train_args = Seq2SeqTrainingArguments(
         output_dir=model_save_dir,
-        logging_dir=logging_dir,
+        logging_dir=model_save_dir,
         logging_steps=args.logging_steps,
         eval_steps=args.evaluation_steps,
         save_steps=args.save_steps,
@@ -125,16 +121,6 @@ def load_data(filename, args, tokenizer):
             except:
                 error_count += 1
                 continue
-    if args.train_file_2:
-        with open(args.train_file_2, 'r', encoding="utf-8") as f:
-            for line in f:
-                try:
-                    src, tgt = line.strip().split('\t')
-                    corpus_src.append(src)
-                    corpus_tgt.append(tgt)
-                except:
-                    error_count += 1
-                    continue
     if error_count > 0:
         print("Errors when loading data: ", error_count)
     # shuffle the data, unless we are predicting
