@@ -1,6 +1,6 @@
 '''Fine-tune a pre-trained model from Huggingface on a new dataset.'''
 
-from transformers import AutoTokenizer, AutoConfig, EarlyStoppingCallback, AutoModelForSeq2SeqLM, Seq2SeqTrainer, DataCollatorForSeq2Seq
+from transformers import AutoTokenizer, EarlyStoppingCallback, AutoModelForSeq2SeqLM, Seq2SeqTrainer, DataCollatorForSeq2Seq
 from utils import get_args, get_train_args, load_data, compute_metrics
 import wandb
 from functools import partial

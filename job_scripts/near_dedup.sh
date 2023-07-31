@@ -12,7 +12,7 @@ set -eu -o pipefail
 export PATH="$PATH:/home1/s3412768/.local/bin"
 export DATA_DIR="/scratch/hb-macocu/NMT_eval/en-sq/data"
 #load environment
-source /home1/s3412768/.envs/nmt/bin/activate
+source /home1/s3412768/.envs/nmt2/bin/activate
 
 # Load modules
 module load Python/3.9.6-GCCcore-11.2.0

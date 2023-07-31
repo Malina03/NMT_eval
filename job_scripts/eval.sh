@@ -1,49 +1,20 @@
 #!/bin/bash
 # Job scheduling info, only for us specifically
 #SBATCH --time=00:30:00
-#SBATCH --job-name=eval
+#SBATCH --job-name=hbs
 #SBATCH --partition=gpu
 #SBATCH --gpus-per-node=1
-#SBATCH --mem=50G
+#SBATCH --mem=20G
 
 module purge
 module load TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
 source $HOME/.envs/nmt_eval/bin/activate
-
 set -eu -o pipefail
 
 # Calculate all metrics between two files
 out=$1 # File produced by model
-eval=$2 # File from which to extract ref and src
-lang=$3 # Language of the target file (needed for BERT-score)
-
-ref=$eval.ref
-src=$eval.src
-
-# check if ref and src files exist and create them if not
-if [[ ! -f $ref ]]; then
-	echo "Reference file $ref not found, create it"
-	# First check if the file exists in the data folder
-	if [[ -f $eval ]]; then
-		# If so, extract the reference column
-		cut -f2 $eval > $ref
-	else
-		echo "File $eval not found"
-	fi
-fi
-
-if [[ ! -f $src ]]; then
-	echo "Source file $src not found, create it"
-	# First check if the file exists in the data folder
-	if [[ -f $eval ]]; then
-		# If so, extract the source column
-		cut -f1 $eval > $src
-	else
-		echo "File $eval not found"
-	fi
-fi
-
-
+ref=$2 # Gold standard file
+src=$3 # Source file for translation (needed by COMET)
 
 if [[ ! -f $out ]]; then
 	echo "Output file $out not found, skip evaluation"
@@ -51,6 +22,7 @@ else
 	# NOTE: automatically get target language by last 2 chars of ref file
 	# So assume it is called something like wiki.en-mt for example
 	# Otherwise just manually specify it below
+	lang=${ref: -2}
 	
 	# Skip whole BLEU/chrf section if last file already exists
 	
@@ -75,7 +47,7 @@ else
 	if [[ -f "${out}.eval.bleurt" ]]; then
 		echo "Eval file already exists, skip BLEURT"
 	else
-		srun python -m bleurt.score_files -candidate_file=${out} -reference_file=${ref} -bleurt_checkpoint $HOME/bleurt/BLEURT-20 -scores_file=${out}.eval.bleurt
+		python -m bleurt.score_files -candidate_file=${out} -reference_file=${ref} -bleurt_checkpoint BLEURT-20 -scores_file=${out}.eval.bleurt
 	fi
 
 	# COMET (might not work so well for Maltese, as it is not in XLM-R)

@@ -11,10 +11,9 @@
 export PATH="$PATH:/home1/s3412768/.local/bin"
 
 # Load modules
-# module load Python/3.9.6-GCCcore-11.2.0
 module purge
 module load PyTorch/1.12.1-foss-2022a-CUDA-11.7.0
-# module load TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
+
 
 export PYTORCH_CUDA_ALLOC_CONF=garbage_collection_threshold:0.6,max_split_size_mb:128
 export CUDA_VISIBLE_DEVICES=0 
@@ -29,7 +28,6 @@ root_dir="${root}/en-hbs"
 checkpoint=$root_dir/models/fine_tune/$train_corpus/checkpoint-*
 model="Helsinki-NLP/opus-mt-en-sla"
 
-# languages=("bg" "bs" "cnr" "hr"	"is" "mk" "mt" "sl" "sq" "sr" "tr")
 
 languages=("bs" "cnr" "hr" "sr")
 
