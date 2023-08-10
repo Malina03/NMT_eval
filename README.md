@@ -57,7 +57,7 @@ python src/train.py \
 ```
 
 Where the root_dir is the directory where you want your models to be saved. It ideally also contains your data and train and dev files, but you will have to provide **absolute paths** to these as well. The code will create a models directory, with sub-folders named after the exp_type and training cropus (assuming the corpus name is the first segment after splitting the train file name by ".") where the best model checkpoint is saved. The model name should correspond to the models listed on Huggingface, for instance Helsinki-NLP/opus-mt-en-sla. It's good to write the training output to a log file, to keep track of the training metrics.
-
+```
 |- root_dir
     |- data
         |- $train_file
@@ -67,7 +67,7 @@ Where the root_dir is the directory where you want your models to be saved. It i
             |- corpus
                 |- checkpoint
 
-
+```
 If you're using the already pre-processed data on Habrok, there are job scripts that can handle training. They will automatically use the correct models, training and dev files. They will also create a log file in a new logs directory, under the root_dir. You need to specify the training corpus and target language, for instance:
 
 ```
